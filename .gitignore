@@ -56,3 +56,4 @@ Versions/
 
 # Excluded embedded sub-projects (have their own repos or are too large)
 wppconnect-master/
+wppconnect-deploy.tar.gz
