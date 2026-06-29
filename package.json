@@ -1,0 +1,17 @@
+{
+  "name": "threa",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve -l 8080",
+    "start": "npm run dev",
+    "video:generate": "node scripts/generate-ayn-maqadi-video.mjs",
+    "bookings:clear": "node scripts/clear-all-bookings.mjs",
+    "bookings:clear:yes": "node scripts/clear-all-bookings.mjs --yes"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.107.0",
+    "ffmpeg-static": "^5.3.0",
+    "msedge-tts": "^2.0.5",
+    "playwright": "^1.60.0"
+  }
+}

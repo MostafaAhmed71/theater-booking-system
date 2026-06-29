@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <title>مراجعة طلبات ضيوف المراسم — ثريا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./guest-requests-admin.css?v=1" />
+    <script defer src="./vendor/qrcode.min.js?v=1"></script>
+  </head>
+  <body class="gra-body">
+    <header class="gra-header">
+      <h1>مراجعة طلبات ضيوف المراسم</h1>
+      <p class="gra-lead">
+        قبول الطلب → اختيار مقعد من مقاعد الضيوف المعاينة فقط (أخضر = متاح، أحمر = محجوز).
+        بعد القبول تُرسل دعوة واتساب تلقائياً. من تبويب «مقبولة» يمكن إعادة إرسال الدعوة.
+      </p>
+      <nav class="gra-nav">
+        <a href="./calibrate.html">المعايرة</a>
+        <a href="./guest-booking.html">صفحة حجز الضيوف</a>
+        <a href="./organizer.html">شاشة المنظّم</a>
+      </nav>
+    </header>
+
+    <div class="gra-stats" id="gra-stats" aria-live="polite">جاري التحميل…</div>
+
+    <div class="gra-tabs" role="tablist">
+      <button type="button" class="gra-tab is-active" data-tab="pending">قيد المراجعة</button>
+      <button type="button" class="gra-tab" data-tab="approved">مقبولة</button>
+      <button type="button" class="gra-tab" data-tab="rejected">مرفوضة</button>
+    </div>
+
+    <ul class="gra-list" id="gra-list" aria-live="polite"></ul>
+    <p class="gra-empty" id="gra-empty" hidden>لا توجد طلبات في هذا القسم.</p>
+
+    <div class="gra-seat-modal" id="gra-seat-modal" hidden role="dialog" aria-modal="true">
+      <div class="gra-seat-backdrop" id="gra-seat-backdrop"></div>
+      <div class="gra-seat-panel">
+        <h2 class="gra-seat-title" id="gra-seat-title">اختيار مقعد للضيف</h2>
+        <p class="gra-seat-guest" id="gra-seat-guest"></p>
+        <p class="gra-seat-legend">
+          <span class="gra-legend gra-legend--free">متاح</span>
+          <span class="gra-legend gra-legend--busy">محجوز</span>
+          <span class="gra-legend gra-legend--pick">مختار</span>
+        </p>
+        <div class="gra-seat-grid" id="gra-seat-grid"></div>
+        <p class="gra-seat-picked" id="gra-seat-picked" aria-live="polite">لم يُختر مقعد بعد.</p>
+        <div class="gra-seat-actions">
+          <button type="button" class="gra-btn gra-btn--primary" id="gra-approve-btn" disabled>
+            قبول وإرسال واتساب
+          </button>
+          <button type="button" class="gra-btn" id="gra-seat-cancel">إلغاء</button>
+        </div>
+        <p class="gra-msg" id="gra-seat-msg" role="status" hidden></p>
+      </div>
+    </div>
+
+    <script defer src="./threa-config.js?v=13"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./threa-links.js?v=1"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./guest-quota.js?v=7"></script>
+    <script defer src="./panorama-storage.js?v=2"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./guest-request-store.js?v=1"></script>
+    <script defer src="./ceremony-guest-invite.js?v=8"></script>
+    <script defer src="./guest-requests-admin.js?v=5"></script>
+  </body>
+</html>

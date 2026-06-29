@@ -1,0 +1,1588 @@
+/* —— Base —— */
+/* Mobile-first: الافتراضي للهاتف، ثم @media (min-width) للشاشات الأوسع */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #f5f5f7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: #1a2030;
+  background-image:
+    linear-gradient(
+      165deg,
+      rgba(8, 12, 22, 0.38) 0%,
+      rgba(12, 18, 32, 0.28) 45%,
+      rgba(6, 10, 20, 0.42) 100%
+    ),
+    url("./assets/theater-mobile.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* scroll على الجوال يقلّل تقطّع iOS؛ fixed على الشاشات الأوسع */
+  background-attachment: scroll;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
+}
+
+#webgl-root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
+  z-index: 0;
+  overflow: hidden;
+  background: #030305;
+  overscroll-behavior: contain;
+}
+
+#webgl-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  touch-action: none;
+  outline: none;
+}
+
+#pano-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #030305;
+  overscroll-behavior: contain;
+  min-height: 100dvh;
+  min-height: 100svh;
+  /* تمرير أفقي موحّد مع scrollLeft في وضع RTL للصفحة */
+  direction: ltr;
+}
+
+#pano-stage.pano-stage--explore {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  /* تمرير بإصبع؛ التقريب بقرصة إصبعين يُدار من JavaScript */
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#pano-stage.pano-stage--explore::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.pano-inner {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.pano-route-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+.pano-route-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dashoffset: var(--pano-route-len, 240);
+}
+
+/* قاعدة عريضة شفافة */
+.pano-route-path--track {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 10;
+  opacity: 0.85;
+}
+
+/* توهج خارجي */
+.pano-route-path--glow {
+  stroke-width: 7;
+  opacity: 0.55;
+}
+
+.pano-route-group--student .pano-route-path--glow {
+  stroke: rgba(34, 211, 238, 0.45);
+}
+
+.pano-route-group--companion .pano-route-path--glow {
+  stroke: rgba(74, 222, 128, 0.45);
+}
+
+/* الخط الرئيسي المتدرّج */
+.pano-route-path--main {
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
+}
+
+.pano-route-group--student .pano-route-path--main {
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.35));
+}
+
+.pano-route-group--companion .pano-route-path--main {
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.35));
+}
+
+/* خط متحرك فوق المسار (نقاط سير) */
+.pano-route-path--flow {
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 2;
+  stroke-dasharray: 3 14;
+  opacity: 0.9;
+}
+
+.pano-route-path.is-drawn {
+  animation: panoRouteDraw 1.6s cubic-bezier(0.33, 1, 0.45, 1) forwards;
+}
+
+.pano-route-path--main.is-drawn {
+  animation:
+    panoRouteDraw 1.6s cubic-bezier(0.33, 1, 0.45, 1) forwards,
+    panoRouteShimmer 2.8s ease-in-out 1.6s infinite;
+}
+
+.pano-route-path--flow.is-drawn {
+  animation:
+    panoRouteDraw 1.6s cubic-bezier(0.33, 1, 0.45, 1) forwards,
+    panoRouteFlow 2.4s linear 1.5s infinite;
+}
+
+.pano-route-path--glow.is-drawn,
+.pano-route-path--track.is-drawn {
+  animation: panoRouteDraw 1.8s cubic-bezier(0.33, 1, 0.45, 1) forwards;
+}
+
+@keyframes panoRouteDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes panoRouteFlow {
+  to {
+    stroke-dashoffset: calc(-1 * var(--pano-route-len, 120));
+  }
+}
+
+@keyframes panoRouteShimmer {
+  0%,
+  100% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.72;
+  }
+}
+
+/* —— مدخل —— */
+.pano-route-entrance-pulse {
+  fill: rgba(34, 211, 238, 0.2);
+  stroke: rgba(34, 211, 238, 0.5);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: panoEntrancePulse 2.2s ease-out infinite;
+}
+
+.pano-route-entrance-ring {
+  fill: rgba(15, 23, 42, 0.75);
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2;
+}
+
+.pano-route-entrance-core {
+  fill: #22d3ee;
+  stroke: #fff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.9));
+}
+
+.pano-route-entrance-icon {
+  fill: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.pano-route-entrance-label {
+  fill: #fff;
+  font-family: "Tajawal", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+  transform: translateY(-28px);
+  paint-order: stroke fill;
+  stroke: rgba(0, 0, 0, 0.7);
+  stroke-width: 3px;
+}
+
+@keyframes panoEntrancePulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.85;
+  }
+  70% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* —— نهاية المسار عند المقعد —— */
+.pano-route-endpoint-pulse {
+  fill: none;
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: panoEndPulse 2s ease-out infinite;
+}
+
+.pano-route-endpoint--student .pano-route-endpoint-pulse {
+  stroke: rgba(251, 191, 36, 0.55);
+}
+
+.pano-route-endpoint--companion .pano-route-endpoint-pulse {
+  stroke: rgba(74, 222, 128, 0.55);
+}
+
+.pano-route-endpoint-ring {
+  fill: rgba(15, 23, 42, 0.6);
+  stroke-width: 2;
+}
+
+.pano-route-endpoint--student .pano-route-endpoint-ring {
+  stroke: rgba(251, 191, 36, 0.9);
+}
+
+.pano-route-endpoint--companion .pano-route-endpoint-ring {
+  stroke: rgba(74, 222, 128, 0.9);
+}
+
+.pano-route-endpoint-dot {
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.pano-route-endpoint--student .pano-route-endpoint-dot {
+  fill: #fbbf24;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.95));
+}
+
+.pano-route-endpoint--companion .pano-route-endpoint-dot {
+  fill: #4ade80;
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.95));
+}
+
+@keyframes panoEndPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pano-route-path.is-drawn,
+  .pano-route-entrance-pulse,
+  .pano-route-endpoint-pulse {
+    animation: panoRouteDraw 0.01s linear forwards !important;
+  }
+
+  .pano-route-path--flow.is-drawn,
+  .pano-route-path--main.is-drawn {
+    animation: panoRouteDraw 0.01s linear forwards !important;
+  }
+}
+
+.pano-pins-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ارتفاع = ارتفاع الشاشة وعرض تلقائي حسب نسبة الصورة — تمرير أفقي للبانوراما */
+.pano-img {
+  display: block;
+  width: auto;
+  height: 100dvh;
+  height: 100svh;
+  max-width: none;
+  min-width: 0;
+  max-height: none;
+  user-select: none;
+  touch-action: inherit;
+  vertical-align: top;
+}
+
+@media (min-width: 768px) {
+  .pano-img {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+/* أزرار التقريب للهاتف (فوق البانوراما — داخل الطبقة العلوية) */
+.pano-mobile-bar {
+  position: fixed;
+  z-index: 10;
+  top: max(12px, env(safe-area-inset-top));
+  inset-inline-end: max(12px, env(safe-area-inset-end));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pano-mobile-bar[hidden] {
+  display: none !important;
+}
+
+@media (min-width: 901px) and (pointer: fine) {
+  .pano-mobile-bar {
+    display: none !important;
+  }
+}
+
+.pano-mzoom-btn {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(12, 14, 22, 0.72);
+  color: #f5f5f7;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  transition:
+    background 0.15s ease,
+    transform 0.12s ease;
+}
+
+.pano-mzoom-btn:active {
+  transform: scale(0.96);
+}
+
+.pano-mzoom-btn:hover {
+  background: rgba(28, 32, 48, 0.88);
+}
+
+.pano-pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* بقعة ملوّنة فوق المقعد — أحمر للخريج، أخضر للمرافق */
+.pano-seat-hl {
+  display: block;
+  width: clamp(14px, 3.6vmin, 22px);
+  height: clamp(11px, 2.9vmin, 18px);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transform-origin: center center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.pano-pin--student .pano-seat-hl,
+.pano-pin--primary .pano-seat-hl {
+  width: clamp(16px, 4vmin, 26px);
+  height: clamp(13px, 3.2vmin, 21px);
+  background: radial-gradient(
+    ellipse 95% 90% at 50% 48%,
+    rgba(255, 30, 35, 0.92) 0%,
+    rgba(255, 15, 25, 0.65) 38%,
+    rgba(255, 0, 0, 0.15) 62%,
+    rgba(255, 0, 0, 0) 72%
+  );
+  box-shadow:
+    0 0 12px rgba(255, 25, 35, 0.85),
+    0 0 5px rgba(255, 120, 120, 0.95);
+}
+
+.pano-pin--companion .pano-seat-hl {
+  width: clamp(16px, 4vmin, 26px);
+  height: clamp(13px, 3.2vmin, 21px);
+  background: radial-gradient(
+    ellipse 95% 90% at 50% 48%,
+    rgba(55, 235, 110, 0.92) 0%,
+    rgba(25, 210, 75, 0.65) 38%,
+    rgba(0, 190, 60, 0.15) 62%,
+    rgba(0, 180, 50, 0) 72%
+  );
+  box-shadow:
+    0 0 12px rgba(40, 220, 90, 0.85),
+    0 0 5px rgba(140, 255, 170, 0.95);
+}
+
+.pano-pin.is-pulsing .pano-seat-hl {
+  animation: panoSeatHlPulse 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes panoSeatHlPulse {
+  to {
+    transform: scale(1.06);
+    opacity: 0.82;
+  }
+}
+
+/* —— Overlay shell —— */
+.app-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: max(8px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .app-overlay {
+    padding: max(16px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right))
+      max(20px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
+    gap: 12px;
+  }
+}
+
+.app-overlay > * {
+  pointer-events: auto;
+}
+
+.overlay-main {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0 max(4px, env(safe-area-inset-bottom));
+  /* لا تلتقط النقرات خارج البطاقة — وإلا تُحجب تمرير البانوراما تحتها */
+  pointer-events: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+@media (min-width: 640px) {
+  .overlay-main {
+    padding: 8px 0;
+  }
+}
+
+.overlay-main::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.overlay-main .glass-card,
+#registration-gate,
+#seat-card {
+  pointer-events: auto;
+}
+
+/* —— Registration gate: نموذج داخل حاوية —— */
+#registration-gate[hidden] {
+  display: none !important;
+}
+
+#registration-gate.form-gate {
+  opacity: 1;
+  transform: none;
+  width: 100%;
+  max-width: min(560px, calc(100vw - 20px));
+  margin: 0 auto;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+@media (min-width: 480px) {
+  #registration-gate.form-gate {
+    max-width: min(560px, calc(100vw - 28px));
+  }
+}
+
+#registration-gate .form-gate-inner {
+  padding: clamp(18px, 4.5vw, 28px) clamp(16px, 4vw, 24px);
+  max-height: min(88dvh, 720px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 20px;
+  background: rgba(14, 18, 30, 0.78);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 480px) {
+  #registration-gate .form-gate-inner {
+    border-radius: 24px;
+  }
+}
+
+#registration-gate .registration-school,
+#registration-gate .gate-title,
+#registration-gate .gate-lead {
+  text-align: center;
+}
+
+#registration-gate .registration-school {
+  font-weight: 800;
+  font-size: clamp(0.95rem, 4vw, 1.15rem);
+}
+
+#registration-gate .gate-title {
+  margin-top: 0;
+  font-size: clamp(1.35rem, 6vw, 1.85rem);
+}
+
+#registration-gate .card-kicker,
+#registration-gate .gate-title,
+#registration-gate .gate-lead,
+#registration-gate .field-label,
+#registration-gate .form-note {
+  text-shadow: none;
+}
+
+#registration-gate .field-input {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.registration-logo {
+  display: block;
+  width: clamp(80px, 22vw, 96px);
+  height: clamp(80px, 22vw, 96px);
+  margin: 0 auto 14px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  object-fit: contain;
+  object-position: center;
+  background: #ffffff;
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.guest-booking-header .registration-logo {
+  margin-bottom: 12px;
+}
+
+.registration-school {
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: clamp(0.95rem, 4vw, 1.15rem);
+  font-weight: 800;
+  line-height: 1.45;
+  color: rgba(255, 220, 160, 0.95);
+  letter-spacing: 0.01em;
+}
+
+.gate-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 5.2vw, 1.55rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.gate-lead {
+  margin-bottom: 18px;
+}
+
+.guest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.phone-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.phone-dial-prefix {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(245, 245, 247, 0.95);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+}
+
+.phone-local-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.guest-form-row--pair {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .guest-form-row--pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+  }
+}
+
+.field-group--full {
+  width: 100%;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(245, 245, 247, 0.72);
+}
+
+.optional-tag {
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: rgba(245, 245, 247, 0.45);
+}
+
+.field-input {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f5f5f7;
+  font: inherit;
+  font-size: 1rem;
+  padding: 12px 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field-input::placeholder {
+  color: rgba(245, 245, 247, 0.35);
+}
+
+.field-input:focus {
+  border-color: rgba(120, 200, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(120, 200, 255, 0.12);
+}
+
+.form-note {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(245, 245, 247, 0.45);
+}
+
+.form-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #ffb4b4;
+  background: rgba(180, 40, 40, 0.22);
+  border: 1px solid rgba(255, 120, 120, 0.25);
+}
+
+.form-error[hidden] {
+  display: none !important;
+}
+
+.waitlist-offer {
+  margin-top: 0.5rem;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.waitlist-offer[hidden] {
+  display: none !important;
+}
+
+.waitlist-offer-text {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(244, 240, 232, 0.9);
+}
+
+.submit-btn--waitlist {
+  background: rgba(201, 162, 39, 0.25);
+  border: 1px solid rgba(201, 162, 39, 0.5);
+}
+
+.submit-btn {
+  margin-top: 4px;
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  color: #0a0a0f;
+  background: linear-gradient(135deg, #e8f7ff, #c4d4ff);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+
+.submit-btn:hover {
+  filter: brightness(1.04);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* —— Loading —— */
+.loading-dock {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.loading-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.85);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-label {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(245, 245, 247, 0.65);
+}
+
+.loading-dock[hidden] {
+  display: none !important;
+}
+
+/* —— Glass card —— */
+.glass-card {
+  position: relative;
+  align-self: center;
+  width: calc(100vw - 24px);
+  max-width: 420px;
+  max-height: min(75dvh, 520px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.04)
+  );
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 480px) {
+  .glass-card {
+    width: min(420px, calc(100vw - 32px));
+    border-radius: 24px;
+    max-height: min(70vh, 520px);
+  }
+}
+
+.glass-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.glass-card[hidden] {
+  display: none !important;
+}
+
+/* شريط سفلي: سطر واحد للطالب والمرافقين والمقاعد + زر تركيز */
+#seat-card.seat-bottom-bar {
+  position: fixed;
+  z-index: 8;
+  inset-inline: 0;
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#seat-card.seat-bottom-bar.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#seat-card.seat-bottom-bar[hidden] {
+  display: none !important;
+}
+
+.seat-bottom-bar-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0 max(10px, env(safe-area-inset-left)) 0
+    max(10px, env(safe-area-inset-right));
+  min-height: 48px;
+  max-width: 100%;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: none;
+  background: rgba(10, 12, 20, 0.88);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+.seat-bottom-bar-line {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 12px 12px 14px;
+  font-size: clamp(0.78rem, 2.8vw, 0.9rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: #f2f4f8;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  text-align: start;
+}
+
+.seat-bottom-bar-line::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
+.seat-bottom-bar-btn {
+  flex-shrink: 0;
+  align-self: stretch;
+  min-width: 4.5rem;
+  padding: 0 12px;
+  border: none;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(40, 120, 180, 0.42);
+  color: #e8fbff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s ease;
+}
+
+.seat-bottom-bar-btn:hover {
+  background: rgba(55, 145, 205, 0.52);
+}
+
+.seat-bottom-bar-btn:active {
+  background: rgba(35, 100, 155, 0.55);
+}
+
+.card-glow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(120, 200, 255, 0.18),
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 23px;
+  padding: clamp(20px, 5vw, 28px);
+  background: rgba(12, 12, 18, 0.42);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card-kicker {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 247, 0.45);
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.card-lead {
+  margin: 0 0 22px;
+  font-size: clamp(0.88rem, 3.2vw, 0.98rem);
+  line-height: 1.65;
+  color: rgba(245, 245, 247, 0.72);
+  font-weight: 400;
+}
+
+.seat-facts {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fact-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 0;
+  align-items: baseline;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (min-width: 420px) {
+  .fact-row {
+    grid-template-columns: minmax(72px, 28%) 1fr;
+    gap: 10px 14px;
+  }
+}
+
+.fact-row dt {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(245, 245, 247, 0.45);
+}
+
+.fact-row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #f5f5f7;
+  word-break: break-word;
+}
+
+.card-seat-lines {
+  white-space: pre-line;
+  line-height: 1.55;
+}
+
+.fact-row code {
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.82rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chart-launch-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(245, 245, 247, 0.92);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.chart-launch-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+/* —— Seat map modal (2D panorama + pin) —— */
+.seat-map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: max(12px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+.seat-map-modal:not([hidden]) {
+  pointer-events: auto;
+}
+
+.seat-map-modal[hidden] {
+  display: none !important;
+}
+
+.seat-map-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(5, 5, 10, 0.82);
+  cursor: pointer;
+}
+
+.seat-map-panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: min(88vh, 720px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  background: rgba(14, 14, 22, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  pointer-events: auto;
+}
+
+.seat-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.seat-map-title {
+  margin: 0;
+  font-size: clamp(1rem, 3.8vw, 1.15rem);
+  font-weight: 800;
+}
+
+.seat-map-close {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.seat-map-hint {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(245, 245, 247, 0.62);
+}
+
+.seat-map-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #020208;
+}
+
+.seat-map-inner {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  height: min(42vh, 360px);
+}
+
+.seat-map-inner img {
+  display: block;
+  height: min(42vh, 360px);
+  width: auto;
+  max-width: none;
+}
+
+.seat-map-pin {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  border-radius: 50%;
+  border: 3px solid #ff3b30;
+  background: rgba(255, 59, 48, 0.35);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.85),
+    0 0 24px rgba(255, 59, 48, 0.9);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* —— Floor chart modal (reference photo) —— */
+.floor-chart-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: max(12px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+.floor-chart-modal:not([hidden]) {
+  pointer-events: auto;
+}
+
+.floor-chart-modal[hidden] {
+  display: none !important;
+}
+
+.floor-chart-panel {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  max-height: min(92vh, 860px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  background: rgba(14, 14, 22, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  pointer-events: auto;
+}
+
+.floor-chart-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0a0a10;
+  text-align: center;
+}
+
+.floor-chart-body img {
+  display: inline-block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  vertical-align: top;
+}
+
+.badge-soft {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(245, 245, 247, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.badge-soft.subtle {
+  opacity: 0.65;
+}
+
+.field-input--readonly {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(245, 245, 247, 0.92);
+  cursor: default;
+}
+
+/* —— نافذة تأكيد الحجز —— */
+.booking-confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+
+.booking-confirm-modal[hidden] {
+  display: none !important;
+}
+
+.booking-confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 14, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.booking-confirm-panel {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  max-height: min(90dvh, 720px);
+  overflow: auto;
+  padding: 24px 22px;
+  border-radius: 20px;
+  background: linear-gradient(165deg, rgba(22, 26, 38, 0.98), rgba(12, 14, 22, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+.booking-confirm-title {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f5f5f7;
+}
+
+.booking-confirm-lead {
+  margin: 0 0 16px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(245, 245, 247, 0.72);
+}
+
+.booking-confirm-seats {
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(245, 245, 247, 0.88);
+}
+
+.booking-seat-line {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.booking-seat-line:last-child {
+  border-bottom: none;
+}
+
+.booking-invite-card {
+  margin: 12px 0 16px;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(30, 58, 90, 0.35), rgba(14, 18, 30, 0.9));
+  border: 1px solid rgba(120, 200, 255, 0.2);
+}
+
+.booking-invite-badge {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(126, 232, 211, 0.9);
+}
+
+.booking-invite-code {
+  margin: 0.35rem 0 0.5rem;
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffe9a8;
+  text-align: center;
+}
+
+.booking-invite-names {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f5f5f7;
+  line-height: 1.45;
+}
+
+.booking-qr-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.booking-invite-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(245, 245, 247, 0.55);
+  text-align: center;
+}
+
+.booking-wa-status {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: rgba(126, 232, 211, 0.95);
+}
+
+.booking-confirm-countdown {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  color: rgba(158, 245, 232, 0.95);
+}
+
+.booking-confirm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.booking-btn:active {
+  transform: scale(0.98);
+}
+
+.booking-btn--primary {
+  background: linear-gradient(135deg, #2dd4bf, #0ea5e9);
+  color: #0a0a0f;
+}
+
+.booking-btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e8fbff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* —— Noscript —— */
+.noscript-banner {
+  position: fixed;
+  inset: auto 16px 16px 16px;
+  z-index: 99;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #1c1c1e;
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* —— Reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  .loading-ring {
+    animation: none;
+    border-top-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .glass-card {
+    transition: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .fact-row dt {
+    font-size: 0.7rem;
+  }
+}
+
+/* —— حجز الخريج: عرض الجوال —— */
+@media (max-width: 767px) {
+  #registration-gate.form-gate {
+    width: 100%;
+    max-width: calc(100vw - 20px);
+  }
+
+  #registration-gate .form-gate-inner {
+    padding: 16px 14px 20px;
+    border-radius: 18px;
+    max-height: min(94dvh, 720px);
+  }
+
+  #registration-gate .registration-logo {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 8px;
+    padding: 8px;
+  }
+
+  #registration-gate .registration-school {
+    font-size: 0.92rem;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    padding: 0 2px;
+  }
+
+  #registration-gate .gate-title {
+    font-size: 1.38rem;
+    margin-bottom: 14px;
+  }
+
+  #registration-gate .guest-form {
+    gap: 12px;
+    text-align: right;
+  }
+
+  #registration-gate .field-input {
+    font-size: 16px;
+    min-height: 46px;
+  }
+
+  #registration-gate .phone-dial-prefix {
+    min-height: 46px;
+    padding: 0 10px;
+    font-size: 0.85rem;
+  }
+
+  #registration-gate .submit-btn {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 2px;
+    font-size: 1.02rem;
+  }
+
+  #registration-gate .field-label .optional-tag {
+    display: inline;
+  }
+}

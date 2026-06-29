@@ -1,0 +1,311 @@
+.gra-body {
+  font-family: "Tajawal", system-ui, sans-serif;
+  background: #0a0a0f;
+  color: #f2f2f7;
+  margin: 0;
+  min-height: 100vh;
+  padding: 1rem 1.25rem 2.5rem;
+}
+
+.gra-header h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+}
+
+.gra-lead {
+  margin: 0 0 0.75rem;
+  color: #a8a8b8;
+  line-height: 1.6;
+  max-width: 52rem;
+}
+
+.gra-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.gra-nav a {
+  color: #7eb8ff;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.gra-stats {
+  background: #14141f;
+  border: 1px solid #2a2a3a;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.gra-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.gra-tab {
+  border: 1px solid #3a3a4f;
+  background: #161622;
+  color: #ddd;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.gra-tab.is-active {
+  background: #2d5a3d;
+  border-color: #4caf6a;
+  color: #fff;
+}
+
+.gra-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gra-card {
+  background: #12121c;
+  border: 1px solid #2c2c3d;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+
+.gra-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-bottom: 0.35rem;
+}
+
+.gra-card-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.gra-card-time {
+  color: #888;
+  font-size: 0.82rem;
+}
+
+.gra-card-phone {
+  color: #b8c4d8;
+  font-size: 0.9rem;
+  margin-bottom: 0.65rem;
+  direction: ltr;
+  text-align: right;
+}
+
+.gra-card-seat {
+  color: #8fd4a0;
+  font-size: 0.92rem;
+  margin-bottom: 0.5rem;
+}
+
+.gra-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.gra-btn {
+  border: 1px solid #444;
+  background: #1e1e2c;
+  color: #eee;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.gra-btn--primary {
+  background: #2d6a3e;
+  border-color: #4caf6a;
+}
+
+.gra-btn--danger {
+  background: #5a2d2d;
+  border-color: #c45c5c;
+}
+
+.gra-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.gra-empty {
+  text-align: center;
+  color: #888;
+  padding: 2rem 1rem;
+}
+
+.gra-seat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.gra-seat-modal[hidden] {
+  display: none;
+}
+
+.gra-seat-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.gra-seat-panel {
+  position: relative;
+  background: #14141f;
+  border: 1px solid #333;
+  border-radius: 14px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+
+.gra-seat-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+}
+
+.gra-seat-guest {
+  margin: 0 0 0.75rem;
+  color: #aab;
+}
+
+.gra-seat-legend {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.gra-legend::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+.gra-legend--free::before {
+  background: #2e7d45;
+  border: 1px solid #5ecf7a;
+}
+
+.gra-legend--busy::before {
+  background: #6b2e2e;
+  border: 1px solid #e07070;
+}
+
+.gra-legend--pick::before {
+  background: #2e5a8a;
+  border: 1px solid #6eb0ff;
+}
+
+.gra-seat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.gra-seat-section-label {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e8e8f4;
+  border-bottom: 1px solid #2e2e42;
+  padding-bottom: 0.35rem;
+}
+
+.gra-seat-section-label:first-child {
+  margin-top: 0;
+}
+
+.gra-seat-row-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.82rem;
+  color: #9aa;
+}
+
+.gra-seat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.gra-seat-chip {
+  min-width: 2.4rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.gra-seat-chip.is-free {
+  background: #1a3d28;
+  border-color: #3d9a5c;
+  color: #d8ffe4;
+}
+
+.gra-seat-chip.is-busy {
+  background: #3d1f1f;
+  border-color: #a04545;
+  color: #ffc8c8;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.gra-seat-chip.is-picked {
+  background: #1f3d5c;
+  border-color: #5ca8ff;
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(92, 168, 255, 0.35);
+}
+
+.gra-seat-picked {
+  margin: 0.85rem 0;
+  font-size: 0.92rem;
+  color: #cde;
+}
+
+.gra-seat-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.gra-msg {
+  margin-top: 0.65rem;
+  font-size: 0.88rem;
+  color: #8fd4a0;
+}
+
+.gra-msg.is-err {
+  color: #f0a0a0;
+}

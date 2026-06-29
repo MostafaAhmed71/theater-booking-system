@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-analytics">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" href="./assets/logo.jpeg" type="image/jpeg" />
+    <title>لوحة التحليلات — ثريا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./analytics.css?v=1" />
+  </head>
+  <body class="an-body">
+    <div class="an-shell">
+      <header class="an-header">
+        <div>
+          <h1>لوحة التحليلات المباشرة</h1>
+          <p class="an-lead" id="an-school">ثريا — حفل التخرّج</p>
+        </div>
+        <nav class="an-nav">
+          <a href="./index.html">حجز الخريجين</a>
+          <a href="./organizer.html">المنظّم</a>
+          <a href="./calibrate.html">معايرة</a>
+          <a href="./bookings-monitor.html">متابعة الحجوزات</a>
+        </nav>
+      </header>
+
+      <section class="an-countdown" aria-label="العد التنازلي">
+        <p class="an-countdown-label">موعد الحفل</p>
+        <div class="an-countdown-grid" id="an-countdown">
+          <div><span class="an-cd-num" id="cd-days">—</span><span class="an-cd-unit">يوم</span></div>
+          <div><span class="an-cd-num" id="cd-hours">—</span><span class="an-cd-unit">ساعة</span></div>
+          <div><span class="an-cd-num" id="cd-mins">—</span><span class="an-cd-unit">دقيقة</span></div>
+          <div><span class="an-cd-num" id="cd-secs">—</span><span class="an-cd-unit">ثانية</span></div>
+        </div>
+        <p class="an-event-when" id="an-event-when"></p>
+      </section>
+
+      <section class="an-kpis" aria-label="مؤشرات رئيسية">
+        <article class="an-kpi">
+          <span class="an-kpi-num" id="an-booking-pct">0%</span>
+          <span class="an-kpi-label">نسبة الحجز</span>
+          <span class="an-kpi-sub" id="an-booking-sub">0 / 0 مقعد</span>
+        </article>
+        <article class="an-kpi">
+          <span class="an-kpi-num" id="an-checkin-num">0</span>
+          <span class="an-kpi-label">مقاعد بحضور مُسجَّل</span>
+          <span class="an-kpi-sub" id="an-checkin-sub">مسح QR</span>
+        </article>
+        <article class="an-kpi">
+          <span class="an-kpi-num" id="an-rsvp-num">0</span>
+          <span class="an-kpi-label">تأكيد RSVP</span>
+          <span class="an-kpi-sub" id="an-rsvp-sub">مؤكد / معتذر / معلّق</span>
+        </article>
+        <article class="an-kpi">
+          <span class="an-kpi-num" id="an-wa-num">0</span>
+          <span class="an-kpi-label">واتساب</span>
+          <span class="an-kpi-sub" id="an-wa-sub">مُرسَل / فشل</span>
+        </article>
+        <article class="an-kpi">
+          <span class="an-kpi-num" id="an-wl-num">0</span>
+          <span class="an-kpi-label">قائمة الانتظار</span>
+          <span class="an-kpi-sub" id="an-wl-sub">بانتظار إشعار</span>
+        </article>
+      </section>
+
+      <section class="an-panel" aria-label="خريطة حرارية">
+        <div class="an-panel-head">
+          <h2>خريطة حرارية للمسرح</h2>
+          <ul class="an-legend">
+            <li><span class="an-dot an-dot--empty"></span> فارغ</li>
+            <li><span class="an-dot an-dot--booked"></span> محجوز</li>
+            <li><span class="an-dot an-dot--in"></span> حضور</li>
+          </ul>
+        </div>
+        <div class="an-heatmap-wrap">
+          <div class="an-heatmap" id="an-heatmap"></div>
+        </div>
+      </section>
+
+      <p class="an-foot" id="an-updated">آخر تحديث: —</p>
+    </div>
+
+    <script defer src="./threa-config.js?v=9"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./waitlist.js?v=1"></script>
+    <script defer src="./analytics.js?v=1"></script>
+  </body>
+</html>

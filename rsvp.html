@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-rsvp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" href="./assets/logo.jpeg" type="image/jpeg" />
+    <title>تأكيد الحضور — حفل التخرّج</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./rsvp.css?v=1" />
+  </head>
+  <body class="rsvp-body">
+    <main class="rsvp-card" id="rsvp-card">
+      <header class="rsvp-header">
+        <img
+          class="rsvp-logo"
+          src="./assets/logo.jpeg"
+          alt=""
+          width="72"
+          height="72"
+        />
+        <p class="rsvp-kicker">حفل التخرّج</p>
+        <h1 class="rsvp-title">تأكيد الحضور</h1>
+      </header>
+
+      <p class="rsvp-lead" id="rsvp-lead" hidden>
+        نرجو تأكيد حضوركم أو الاعتذار ليتمكن المنظّمون من التخطيط.
+      </p>
+
+      <div class="rsvp-guest" id="rsvp-guest" hidden>
+        <p class="rsvp-guest-name" id="rsvp-student"></p>
+        <p class="rsvp-guest-meta" id="rsvp-companion" hidden></p>
+      </div>
+
+      <p class="rsvp-status" id="rsvp-current" hidden></p>
+
+      <div class="rsvp-actions" id="rsvp-actions" hidden>
+        <button type="button" class="rsvp-btn rsvp-btn--yes" id="rsvp-confirm">
+          ✅ أؤكد الحضور
+        </button>
+        <button type="button" class="rsvp-btn rsvp-btn--no" id="rsvp-decline">
+          ❌ أعتذر عن الحضور
+        </button>
+      </div>
+
+      <p class="rsvp-msg" id="rsvp-msg" role="status" aria-live="polite"></p>
+      <a class="rsvp-seat-link" id="rsvp-seat-link" href="#" hidden
+        >عرض موقع المقعد</a
+      >
+    </main>
+
+    <script defer src="./threa-config.js?v=9"></script>
+    <script defer src="./invite-codes.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./threa-links.js?v=1"></script>
+    <script defer src="./rsvp.js?v=1"></script>
+  </body>
+</html>

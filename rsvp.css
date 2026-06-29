@@ -1,0 +1,140 @@
+.page-rsvp {
+  --rsvp-bg: #0a0a12;
+  --rsvp-card: rgba(18, 18, 32, 0.95);
+  --rsvp-accent: #c9a227;
+  --rsvp-yes: #1a6b4a;
+  --rsvp-no: #8b2e2e;
+}
+
+.rsvp-body {
+  min-height: 100dvh;
+  margin: 0;
+  font-family: "Tajawal", system-ui, sans-serif;
+  background: radial-gradient(ellipse at 50% 0%, #1a1530 0%, var(--rsvp-bg) 55%);
+  color: #f4f0e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.rsvp-card {
+  width: min(420px, 100%);
+  background: var(--rsvp-card);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
+.rsvp-header {
+  margin-bottom: 1rem;
+}
+
+.rsvp-logo {
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  padding: 4px;
+}
+
+.rsvp-kicker {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--rsvp-accent);
+  letter-spacing: 0.04em;
+}
+
+.rsvp-title {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.rsvp-lead {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(244, 240, 232, 0.85);
+  margin: 0 0 1rem;
+}
+
+.rsvp-guest-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rsvp-guest-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: rgba(244, 240, 232, 0.7);
+}
+
+.rsvp-status {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 1rem 0;
+}
+
+.rsvp-status--confirmed {
+  color: #7dffb0;
+}
+
+.rsvp-status--declined {
+  color: #ffb0b0;
+}
+
+.rsvp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.rsvp-btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 0.65rem;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.12s;
+}
+
+.rsvp-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rsvp-btn--yes {
+  background: var(--rsvp-yes);
+  color: #fff;
+}
+
+.rsvp-btn--no {
+  background: var(--rsvp-no);
+  color: #fff;
+}
+
+.rsvp-msg {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  min-height: 1.5em;
+}
+
+.rsvp-seat-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--rsvp-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.rsvp-seat-link:hover {
+  text-decoration: underline;
+}

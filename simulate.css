@@ -1,0 +1,161 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Tajawal", system-ui, sans-serif;
+  background: #0e121c;
+  color: #f0f0f5;
+}
+
+.sim-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.sim-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.sim-warn {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(180, 80, 40, 0.2);
+  border: 1px solid rgba(255, 160, 100, 0.35);
+  color: #ffd4b8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.sim-card {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sim-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sim-field input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.sim-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.sim-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sim-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.sim-btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sim-btn--primary {
+  background: linear-gradient(135deg, #7ee8d3, #5bc4b0);
+  color: #061210;
+  border: none;
+}
+
+.sim-btn--danger {
+  background: rgba(140, 40, 40, 0.35);
+  border-color: rgba(255, 120, 100, 0.4);
+  color: #ffc9c5;
+}
+
+.sim-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sim-stats {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(126, 232, 211, 0.08);
+  border: 1px solid rgba(126, 232, 211, 0.2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.sim-log-wrap {
+  margin-top: 20px;
+}
+
+.sim-log-wrap h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.sim-log {
+  margin: 0;
+  max-height: 420px;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 12px;
+  background: #05080f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sim-log .ok {
+  color: #8ef0a8;
+}
+
+.sim-log .err {
+  color: #ffb0a8;
+}
+
+.sim-log .muted {
+  color: rgba(255, 255, 255, 0.45);
+}

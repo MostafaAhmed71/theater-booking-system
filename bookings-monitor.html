@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-bookings-monitor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#06080f" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <title>متابعة الحجوزات — ثريا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./bookings-monitor.css?v=3" />
+  </head>
+  <body class="bm-body">
+    <div class="bm-shell">
+      <header class="bm-header">
+        <div class="bm-brand">
+          <span class="bm-brand-icon" aria-hidden="true">📋</span>
+          <div>
+            <h1>متابعة الحجوزات</h1>
+            <p class="bm-lead">تحديث مباشر عند كل حجز جديد + تذكير من لم يؤكّد الحضور (RSVP)</p>
+          </div>
+        </div>
+        <nav class="bm-nav" aria-label="روابط سريعة">
+          <a href="./index.html">حجز الخريجين</a>
+          <a href="./organizer.html">المنظّم</a>
+          <a href="./booking-admin.html">حجز إداري</a>
+          <a href="./analytics.html">التحليلات</a>
+          <a href="./calibrate.html">معايرة</a>
+        </nav>
+      </header>
+
+      <div class="bm-live" id="bm-live" aria-live="polite">
+        <span class="bm-live-dot" id="bm-live-dot"></span>
+        <span id="bm-live-text">جاري الاتصال…</span>
+      </div>
+
+      <div class="bm-toast" id="bm-toast" hidden role="status"></div>
+
+      <section class="bm-stats" aria-label="ملخص الحجوزات">
+        <article class="bm-stat">
+          <span class="bm-stat-num" id="bm-stat-total">0</span>
+          <span class="bm-stat-label">إجمالي الحجوزات</span>
+        </article>
+        <article class="bm-stat bm-stat--ok">
+          <span class="bm-stat-num" id="bm-stat-confirmed">0</span>
+          <span class="bm-stat-label">أكّدوا الحضور</span>
+        </article>
+        <article class="bm-stat bm-stat--warn">
+          <span class="bm-stat-num" id="bm-stat-pending">0</span>
+          <span class="bm-stat-label">بانتظار التأكيد</span>
+        </article>
+        <article class="bm-stat bm-stat--muted">
+          <span class="bm-stat-num" id="bm-stat-declined">0</span>
+          <span class="bm-stat-label">اعتذروا</span>
+        </article>
+      </section>
+
+      <section class="bm-audience" role="tablist" aria-label="نوع الحجوزات">
+        <button type="button" class="bm-audience-tab is-active" data-audience="graduates">
+          الخريجون والمرافقون
+        </button>
+        <button type="button" class="bm-audience-tab" data-audience="guests">
+          ضيوف المراسم
+        </button>
+      </section>
+
+      <section class="bm-toolbar">
+        <div class="bm-filters" role="tablist" aria-label="تصفية الحجوزات">
+          <button type="button" class="bm-filter is-active" data-filter="all">الكل</button>
+          <button type="button" class="bm-filter" data-filter="pending">لم يؤكّدوا</button>
+          <button type="button" class="bm-filter" data-filter="confirmed">مؤكّد</button>
+          <button type="button" class="bm-filter" data-filter="declined">معتذر</button>
+        </div>
+        <label class="bm-search-wrap">
+          <span class="bm-sr-only">بحث</span>
+          <input
+            type="search"
+            class="bm-search"
+            id="bm-search"
+            placeholder="بحث بالاسم أو الرمز…"
+            autocomplete="off"
+          />
+        </label>
+        <div class="bm-actions">
+          <button type="button" class="bm-btn bm-btn--gold" id="bm-remind-all" disabled>
+            إرسال تذكير للمعلّقين
+          </button>
+          <button type="button" class="bm-btn" id="bm-refresh">تحديث</button>
+        </div>
+      </section>
+
+      <p class="bm-wa-status" id="bm-wa-status" aria-live="polite"></p>
+      <p class="bm-updated" id="bm-updated">آخر تحديث: —</p>
+
+      <section class="bm-exports" id="bm-exports" aria-label="كشوف الحضور والطباعة">
+        <h2 class="bm-exports-title">كشوف الحضور والمقاعد</h2>
+        <p class="bm-exports-lead">طباعة أو تصدير PDF — الاسم والمقعد حسب آخر بيانات الحجز.</p>
+        <div class="bm-exports-grid">
+          <article class="bm-export-card">
+            <h3>حضور الخريجين</h3>
+            <p class="bm-export-desc">الاسم · مقعد الخريج (يسار)</p>
+            <div class="bm-export-actions">
+              <button type="button" class="bm-btn bm-btn--sm" data-roster="students" data-action="print">طباعة</button>
+              <button type="button" class="bm-btn bm-btn--sm bm-btn--gold" data-roster="students" data-action="pdf">PDF</button>
+            </div>
+          </article>
+          <article class="bm-export-card">
+            <h3>حضور المرافقين</h3>
+            <p class="bm-export-desc">الاسم · مقعد المرافق (يمين)</p>
+            <div class="bm-export-actions">
+              <button type="button" class="bm-btn bm-btn--sm" data-roster="companions" data-action="print">طباعة</button>
+              <button type="button" class="bm-btn bm-btn--sm bm-btn--gold" data-roster="companions" data-action="pdf">PDF</button>
+            </div>
+          </article>
+          <article class="bm-export-card">
+            <h3>حضور الضيوف</h3>
+            <p class="bm-export-desc">الاسم · مقعد الضيف</p>
+            <div class="bm-export-actions">
+              <button type="button" class="bm-btn bm-btn--sm" data-roster="guests" data-action="print">طباعة</button>
+              <button type="button" class="bm-btn bm-btn--sm bm-btn--gold" data-roster="guests" data-action="pdf">PDF</button>
+            </div>
+          </article>
+          <article class="bm-export-card">
+            <h3>المقاعد المتاحة</h3>
+            <p class="bm-export-desc">خريج · مرافق · ضيف — غير محجوزة</p>
+            <div class="bm-export-actions">
+              <button type="button" class="bm-btn bm-btn--sm" data-roster="available" data-action="print">طباعة</button>
+              <button type="button" class="bm-btn bm-btn--sm bm-btn--gold" data-roster="available" data-action="pdf">PDF</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table" id="bm-table" data-audience="graduates">
+          <thead>
+            <tr>
+              <th id="bm-th-name">الخريج</th>
+              <th id="bm-th-companion">المرافق</th>
+              <th>الرمز</th>
+              <th>المقاعد</th>
+              <th>RSVP</th>
+              <th>وقت الحجز</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="bm-tbody"></tbody>
+        </table>
+      </div>
+
+      <p class="bm-empty" id="bm-empty" hidden>لا توجد حجوزات في هذا القسم.</p>
+    </div>
+
+    <script defer src="./threa-config.js?v=13"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./threa-links.js?v=1"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./guest-quota.js?v=7"></script>
+    <script defer src="./panorama-storage.js?v=2"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./bookings-roster-export.js?v=4"></script>
+    <script defer src="./bookings-monitor.js?v=5"></script>
+  </body>
+</html>

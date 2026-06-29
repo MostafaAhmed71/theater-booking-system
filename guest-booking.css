@@ -1,0 +1,116 @@
+/* صفحة حجز ضيوف المراسم فقط */
+.page-guest-booking,
+.guest-booking-body {
+  overflow: auto;
+  min-height: 100dvh;
+  background-color: #12182a;
+  background-image:
+    linear-gradient(165deg, rgba(8, 12, 28, 0.92) 0%, rgba(18, 24, 42, 0.88) 55%),
+    url("./assets/theater-mobile.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.guest-booking-shell {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2.5rem;
+}
+
+.guest-booking-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.guest-booking-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #f5f5f7;
+}
+
+.guest-pending-note {
+  margin: 0.75rem 0 1rem;
+  color: #b8c8dc;
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+
+.guest-booking-lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(245, 245, 247, 0.82);
+}
+
+.guest-quota-banner {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e8ecf4;
+}
+
+.guest-quota-banner.is-full {
+  background: rgba(180, 50, 50, 0.25);
+  border-color: rgba(255, 120, 120, 0.35);
+  color: #ffd4d4;
+}
+
+.guest-quota-banner.is-low {
+  background: rgba(200, 140, 40, 0.2);
+  border-color: rgba(255, 200, 100, 0.3);
+}
+
+.guest-form-gate {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  pointer-events: auto;
+}
+
+.guest-form-gate .form-gate-inner {
+  backdrop-filter: blur(12px);
+  background: rgba(12, 16, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.1rem 1rem 1.25rem;
+}
+
+.guest-booking-footer-note {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(245, 245, 247, 0.55);
+}
+
+.guest-booking-footer-note a {
+  color: rgba(180, 210, 255, 0.9);
+  text-decoration: none;
+}
+
+.guest-booking-footer-note a:hover {
+  text-decoration: underline;
+}
+
+.guest-loading-dock {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.page-guest-booking .booking-confirm-modal {
+  z-index: 300;
+}
+
+.page-guest-booking #booking-seat-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

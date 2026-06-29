@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#06080f" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <title>حجز إداري — ثريا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./booking-admin.css?v=1" />
+  </head>
+  <body class="ba-body">
+    <div class="ba-shell">
+      <header class="ba-header">
+        <div class="ba-brand">
+          <span class="ba-brand-icon" aria-hidden="true">🎫</span>
+          <div>
+            <h1>حجز إداري</h1>
+            <p class="ba-lead">حجز يدوي لكل الفئات — خريج، مرافق، ضيف — وعرض المقاعد المتاحة</p>
+          </div>
+        </div>
+        <nav class="ba-nav" aria-label="روابط سريعة">
+          <a href="./organizer.html">المنظّم</a>
+          <a href="./bookings-monitor.html">متابعة الحجوزات</a>
+          <a href="./guest-requests-admin.html">طلبات الضيوف</a>
+          <a href="./calibrate.html">المعايرة</a>
+        </nav>
+      </header>
+
+      <div class="ba-quota" id="ba-quota" aria-live="polite">جاري التحميل…</div>
+
+      <div class="ba-tabs" role="tablist" aria-label="نوع الحجز">
+        <button type="button" class="ba-tab is-active" data-tab="graduate">خريج فقط</button>
+        <button type="button" class="ba-tab" data-tab="grad-companion">خريج + مرافق</button>
+        <button type="button" class="ba-tab" data-tab="companion">مرافق فقط</button>
+        <button type="button" class="ba-tab" data-tab="guest">ضيف مراسم</button>
+        <button type="button" class="ba-tab" data-tab="seats">المقاعد المتاحة</button>
+      </div>
+
+      <section class="ba-panel is-active" id="ba-panel-graduate" data-panel="graduate">
+        <form class="ba-form" id="ba-form-graduate">
+          <div class="ba-field">
+            <label for="ba-grad-nid">رقم هوية الخريج</label>
+            <input id="ba-grad-nid" type="text" inputmode="numeric" maxlength="16" required />
+          </div>
+          <div class="ba-field">
+            <label for="ba-grad-name">اسم الخريج</label>
+            <input id="ba-grad-name" type="text" readonly required placeholder="يُملأ تلقائياً من القائمة" />
+          </div>
+          <div class="ba-field">
+            <label for="ba-grad-phone">واتساب</label>
+            <div class="ba-phone-row">
+              <span dir="ltr">+966</span>
+              <input id="ba-grad-phone" type="tel" inputmode="tel" required placeholder="5xxxxxxxx" />
+            </div>
+          </div>
+          <button type="submit" class="ba-btn ba-btn--primary">حجز مقعد خريج</button>
+        </form>
+      </section>
+
+      <section class="ba-panel" id="ba-panel-grad-companion" data-panel="grad-companion" hidden>
+        <form class="ba-form" id="ba-form-grad-companion">
+          <div class="ba-field">
+            <label for="ba-gc-nid">رقم هوية الخريج</label>
+            <input id="ba-gc-nid" type="text" inputmode="numeric" maxlength="16" required />
+          </div>
+          <div class="ba-field">
+            <label for="ba-gc-name">اسم الخريج</label>
+            <input id="ba-gc-name" type="text" readonly required />
+          </div>
+          <div class="ba-field">
+            <label for="ba-gc-companion">اسم المرافق</label>
+            <input id="ba-gc-companion" type="text" required minlength="2" />
+          </div>
+          <div class="ba-field">
+            <label for="ba-gc-phone">واتساب</label>
+            <div class="ba-phone-row">
+              <span dir="ltr">+966</span>
+              <input id="ba-gc-phone" type="tel" inputmode="tel" required placeholder="5xxxxxxxx" />
+            </div>
+          </div>
+          <button type="submit" class="ba-btn ba-btn--primary">حجز خريج + مرافق</button>
+        </form>
+      </section>
+
+      <section class="ba-panel" id="ba-panel-companion" data-panel="companion" hidden>
+        <form class="ba-form" id="ba-form-companion">
+          <p class="ba-hint">مقعد واحد من مجموعة المرافقين (يمين) — برقم هوية المرافق.</p>
+          <div class="ba-field">
+            <label for="ba-comp-nid">رقم هوية المرافق</label>
+            <input id="ba-comp-nid" type="text" inputmode="numeric" maxlength="16" required />
+          </div>
+          <div class="ba-field">
+            <label for="ba-comp-name">اسم المرافق</label>
+            <input id="ba-comp-name" type="text" required minlength="2" />
+          </div>
+          <div class="ba-field">
+            <label for="ba-comp-phone">واتساب</label>
+            <div class="ba-phone-row">
+              <span dir="ltr">+966</span>
+              <input id="ba-comp-phone" type="tel" inputmode="tel" required placeholder="5xxxxxxxx" />
+            </div>
+          </div>
+          <button type="submit" class="ba-btn ba-btn--primary">حجز مقعد مرافق</button>
+        </form>
+      </section>
+
+      <section class="ba-panel" id="ba-panel-guest" data-panel="guest" hidden>
+        <form class="ba-form" id="ba-form-guest">
+          <div class="ba-field">
+            <label for="ba-guest-name">اسم الضيف</label>
+            <input id="ba-guest-name" type="text" required minlength="3" />
+          </div>
+          <div class="ba-field">
+            <label for="ba-guest-phone">واتساب</label>
+            <div class="ba-phone-row">
+              <span dir="ltr">+966</span>
+              <input id="ba-guest-phone" type="tel" inputmode="tel" required placeholder="5xxxxxxxx" />
+            </div>
+          </div>
+          <button type="submit" class="ba-btn ba-btn--primary">حجز ضيف مراسم</button>
+        </form>
+      </section>
+
+      <section class="ba-panel" id="ba-panel-seats" data-panel="seats" hidden>
+        <div class="ba-seat-tabs" role="tablist">
+          <button type="button" class="ba-seat-tab is-active" data-pool="student">خريجون</button>
+          <button type="button" class="ba-seat-tab" data-pool="companion">مرافقون</button>
+          <button type="button" class="ba-seat-tab" data-pool="guest">ضيوف</button>
+        </div>
+        <p class="ba-seat-summary" id="ba-seat-summary">—</p>
+        <div class="ba-seat-grid" id="ba-seat-grid"></div>
+      </section>
+
+      <p class="ba-msg" id="ba-msg" role="status" hidden></p>
+      <div class="ba-result" id="ba-result" hidden>
+        <h2>تم الحجز</h2>
+        <p id="ba-result-text"></p>
+        <p class="ba-result-code" id="ba-result-code" hidden></p>
+      </div>
+    </div>
+
+    <script defer src="./threa-config.js?v=13"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script defer src="./student-roster.js?v=2"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./guest-quota.js?v=7"></script>
+    <script defer src="./panorama-storage.js?v=2"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./seat-picker.js?v=1"></script>
+    <script defer src="./booking-admin.js?v=1"></script>
+  </body>
+</html>

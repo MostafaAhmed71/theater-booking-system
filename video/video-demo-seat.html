@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#030305" />
+    <title>عرض مقعدك — عرض توضيحي</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css?v=11" />
+    <link rel="stylesheet" href="../seat.css?v=1" />
+  </head>
+  <body class="seat-view-body">
+    <div
+      id="pano-stage"
+      class="pano-stage pano-stage--explore"
+      aria-label="بانوراما المسرح ومقعدك"
+    >
+      <div class="pano-inner" id="pano-inner">
+        <picture id="pano-picture">
+          <source
+            srcset="../assets/theater-mobile.webp"
+            media="(max-width: 900px)"
+            type="image/webp"
+          />
+          <source
+            srcset="../assets/theater-mobile.jpg"
+            media="(max-width: 900px)"
+            type="image/jpeg"
+          />
+          <source srcset="../assets/theater.webp" type="image/webp" />
+          <img
+            id="pano-img"
+            class="pano-img"
+            src="../assets/theater.jpg"
+            alt="بانوراما المسرح"
+            decoding="async"
+            draggable="false"
+          />
+        </picture>
+        <div id="pano-pins-root" class="pano-pins-root" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="seat-view-bar" id="seat-view-bar">
+      <p class="seat-view-bar-line" id="seat-view-summary"></p>
+      <button type="button" class="seat-view-focus-btn" id="seat-view-focus">
+        تركيز على المقعد
+      </button>
+    </div>
+
+    <div class="pano-mobile-bar" id="pano-mobile-bar" aria-label="التقريب">
+      <button type="button" class="pano-mzoom-btn" id="pano-zoom-out" aria-label="تبعيد">
+        −
+      </button>
+      <button type="button" class="pano-mzoom-btn" id="pano-zoom-in" aria-label="تقريب">
+        +
+      </button>
+    </div>
+
+    <script defer src="../threa-config.js?v=7"></script>
+    <script defer src="../theater-pano-url.js"></script>
+    <script defer src="../seats-data.js?v=5"></script>
+    <script defer src="../booking-policy.js?v=1"></script>
+    <script defer src="../panorama-storage.js"></script>
+    <script defer src="../panorama-path.js"></script>
+    <script defer src="./video-demo-seat.js"></script>
+  </body>
+</html>

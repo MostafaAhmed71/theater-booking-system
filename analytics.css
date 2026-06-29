@@ -1,0 +1,254 @@
+.page-analytics {
+  --an-bg: #06060c;
+  --an-card: #12121f;
+  --an-gold: #c9a227;
+  --an-text: #f0ebe0;
+  --an-muted: rgba(240, 235, 224, 0.65);
+  --an-empty: #2a2a3a;
+  --an-booked: #3d5a8a;
+  --an-in: #1a8f5a;
+}
+
+.an-body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: "Tajawal", system-ui, sans-serif;
+  background: var(--an-bg);
+  color: var(--an-text);
+}
+
+.an-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2.5rem;
+}
+
+.an-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.an-header h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+
+.an-lead {
+  margin: 0.35rem 0 0;
+  color: var(--an-muted);
+  font-size: 0.9rem;
+}
+
+.an-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.an-nav a {
+  color: var(--an-gold);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.an-countdown {
+  background: linear-gradient(135deg, #1a1530, var(--an-card));
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.an-countdown-label {
+  margin: 0 0 0.75rem;
+  color: var(--an-gold);
+  font-weight: 700;
+}
+
+.an-countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.an-countdown-grid > div {
+  min-width: 4.5rem;
+}
+
+.an-cd-num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.an-cd-unit {
+  font-size: 0.8rem;
+  color: var(--an-muted);
+}
+
+.an-event-when {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--an-muted);
+}
+
+.an-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.an-kpi {
+  background: var(--an-card);
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.an-kpi-num {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--an-gold);
+}
+
+.an-kpi-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.an-kpi-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--an-muted);
+  margin-top: 0.2rem;
+}
+
+.an-panel {
+  background: var(--an-card);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.an-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.an-panel-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.an-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.85rem;
+  font-size: 0.78rem;
+  color: var(--an-muted);
+}
+
+.an-dot {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 2px;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+.an-dot--empty {
+  background: var(--an-empty);
+}
+.an-dot--booked {
+  background: var(--an-booked);
+}
+.an-dot--in {
+  background: var(--an-in);
+}
+
+.an-heatmap-wrap {
+  overflow-x: auto;
+}
+
+.an-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: min(100%, 520px);
+}
+
+.an-wing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.an-wing-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--an-gold);
+  margin: 0 0 0.25rem;
+}
+
+.an-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.an-row-label {
+  width: 2rem;
+  font-size: 0.7rem;
+  color: var(--an-muted);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.an-row-seats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.an-seat {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--an-empty);
+  title: attr(data-title);
+}
+
+.an-seat--booked {
+  background: var(--an-booked);
+}
+
+.an-seat--in {
+  background: var(--an-in);
+}
+
+.an-foot {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: var(--an-muted);
+  text-align: center;
+}

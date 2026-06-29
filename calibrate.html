@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-calibrate">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" href="./assets/logo.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./assets/logo.jpeg" />
+    <title>معايرة مقاعد البانوراما</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./calibrate.css?v=7" />
+  </head>
+  <body class="calibrate-body">
+    <header class="calibrate-header">
+      <h1>معايرة علامات المقاعد على الصورة</h1>
+      <nav class="calibrate-nav">
+        <a href="./index.html" class="calibrate-link">← حجز الخريجين</a>
+        <a href="./guest-booking.html" class="calibrate-link">حجز ضيوف المراسم</a>
+        <a href="./guest-requests-admin.html" class="calibrate-link">مراجعة طلبات الضيوف</a>
+        <a href="./organizer.html" class="calibrate-link">شاشة المنظّمين</a>
+        <a href="./analytics.html" class="calibrate-link">لوحة التحليلات</a>
+        <a href="./bookings-monitor.html" class="calibrate-link">متابعة الحجوزات</a>
+      </nav>
+    </header>
+
+    <section
+      class="calibrate-panel calibrate-panel--policy cal-collapse-panel"
+      aria-label="معايير الحجز"
+    >
+      <button
+        type="button"
+        class="cal-collapse-toggle"
+        id="policy-collapse-toggle"
+        aria-expanded="false"
+        aria-controls="policy-collapse-body"
+      >
+        <span class="cal-collapse-title">معايير الحجز (خريج · مرافق · ضيف)</span>
+        <span class="cal-collapse-chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="cal-collapse-body" id="policy-collapse-body" hidden>
+      <p class="calibrate-hint">
+        يحدّد أي الصفوف والمقاعد تُستخدم في
+        <a href="./index.html">حجز الخريجين</a> و
+        <a href="./guest-booking.html">حجز الضيوف</a>. احفظ ثم طبّق مقاعد الضيوف
+        أدناه إن لزم.
+      </p>
+      <form id="booking-policy-form" class="cal-policy-form">
+        <div class="cal-policy-grid">
+          <fieldset class="cal-policy-fieldset">
+            <legend>الخريجون (يسار)</legend>
+            <label class="cal-policy-label"
+              >من ص
+              <input
+                type="number"
+                class="cal-field-input cal-policy-input"
+                name="studentRowMin"
+                min="1"
+                max="12"
+                value="2"
+              />
+            </label>
+            <label class="cal-policy-label"
+              >إلى ص
+              <input
+                type="number"
+                class="cal-field-input cal-policy-input"
+                name="studentRowMax"
+                min="1"
+                max="12"
+                value="9"
+              />
+            </label>
+          </fieldset>
+          <fieldset class="cal-policy-fieldset">
+            <legend>المرافقون (يمين)</legend>
+            <label class="cal-policy-label"
+              >من ص
+              <input
+                type="number"
+                class="cal-field-input cal-policy-input"
+                name="companionRowMin"
+                min="1"
+                max="12"
+                value="2"
+              />
+            </label>
+            <label class="cal-policy-label"
+              >إلى ص
+              <input
+                type="number"
+                class="cal-field-input cal-policy-input"
+                name="companionRowMax"
+                min="1"
+                max="12"
+                value="9"
+              />
+            </label>
+          </fieldset>
+          <fieldset class="cal-policy-fieldset cal-policy-fieldset--wide">
+            <legend>ضيوف المراسم</legend>
+            <label class="cal-policy-label cal-policy-label--full"
+              >أرقام ص الضيوف (مفصولة بفاصلة)
+              <input
+                type="text"
+                class="cal-field-input"
+                name="guestRows"
+                value="1, 10, 11, 12"
+                placeholder="مثال: 1, 10, 11, 12"
+              />
+            </label>
+            <label class="cal-policy-label"
+              >ص 1 من م
+              <input
+                type="number"
+                class="cal-field-input cal-policy-input"
+                name="guestRowFirstMinSeat"
+                min="1"
+                max="11"
+                value="4"
+              />
+            </label>
+            <label class="cal-policy-check">
+              <input type="checkbox" name="guestIncludeBridge" checked />
+              مقاعد القاعدة الوسطى (صف 12) للضيوف
+            </label>
+          </fieldset>
+        </div>
+        <div class="cal-policy-preview" id="booking-policy-preview" aria-live="polite">
+          جاري الحساب…
+        </div>
+        <div class="cal-guest-seats-toolbar">
+          <button type="button" class="cal-btn cal-btn--primary" id="booking-policy-save">
+            حفظ المعايير
+          </button>
+          <button type="button" class="cal-btn" id="booking-policy-reset">استعادة الافتراضي</button>
+          <button type="button" class="cal-btn" id="booking-policy-sync-guests">
+            تطبيق المعايير على مقاعد الحجز (الثلاث فئات)
+          </button>
+        </div>
+      </form>
+      <p class="cal-msg" id="booking-policy-status" role="status" hidden></p>
+      </div>
+    </section>
+
+    <section
+      class="calibrate-panel calibrate-panel--pools cal-collapse-panel"
+      aria-label="تحديد مقاعد الحجز"
+    >
+      <button
+        type="button"
+        class="cal-collapse-toggle"
+        id="pools-collapse-toggle"
+        aria-expanded="false"
+        aria-controls="pools-collapse-body"
+      >
+        <span class="cal-collapse-title">تحديد مقاعد الحجز (خريج · مرافق · ضيف)</span>
+        <span class="cal-collapse-chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="cal-collapse-body" id="pools-collapse-body" hidden>
+      <p class="calibrate-hint">
+        <strong>ثلاث خطوات منفصلة:</strong> (1) معايير الصفوف → «حفظ المعايير» ·
+        (2) قوائم المقاعد هنا → «حفظ المقاعد» · (3) موقع كل مقعد على الصورة أدناه →
+        «حفظ لهذا المقعد». النقاط الخضراء = معايرة محفوظة؛ «غير معاير» = موضع
+        تقريبي من النموذج حتى تحفظه.
+      </p>
+      <div class="cal-pool-tabs" role="tablist" aria-label="فئة المقاعد">
+        <button type="button" class="cal-pool-tab is-active" data-pool="student" role="tab">
+          خريجون (يسار)
+        </button>
+        <button type="button" class="cal-pool-tab" data-pool="companion" role="tab">
+          مرافقون (يمين)
+        </button>
+        <button type="button" class="cal-pool-tab" data-pool="guest" role="tab">
+          ضيوف
+        </button>
+      </div>
+      <p class="cal-pool-tab-hint" id="cal-pool-tab-hint">
+        خريجون: اختر مقاعد الناحية اليسار فقط.
+      </p>
+      <div
+        id="cal-pool-guest-sides"
+        class="cal-guest-side-pick"
+        role="group"
+        aria-label="ناحية مقاعد الضيوف"
+        hidden
+      >
+        <button type="button" class="cal-side-btn" id="cal-pool-side-right" data-section="RIGHT">
+          يمين
+        </button>
+        <button type="button" class="cal-side-btn" id="cal-pool-side-left" data-section="LEFT">
+          يسار
+        </button>
+        <button type="button" class="cal-side-btn" id="cal-pool-side-bridge" data-section="BRIDGE">
+          قاعدة وسط
+        </button>
+      </div>
+      <div
+        id="cal-pool-seat-grid"
+        class="cal-seat-grid cal-pool-seat-grid"
+        aria-label="شبكة تحديد المقاعد"
+      ></div>
+      <div class="cal-guest-seats-toolbar">
+        <button type="button" class="cal-btn" id="cal-pool-from-policy">
+          ملء من المعايير أعلاه
+        </button>
+        <button type="button" class="cal-btn cal-btn--primary" id="cal-pool-save">
+          حفظ المقاعد (الثلاث فئات)
+        </button>
+        <button type="button" class="cal-btn" id="cal-pool-clear">مسح تبويب الحالي</button>
+      </div>
+      <p class="cal-msg" id="cal-pool-status" role="status">جاري التحميل…</p>
+      </div>
+    </section>
+
+    <section
+      class="calibrate-panel calibrate-panel--quota cal-collapse-panel"
+      aria-label="حدّ مقاعد الضيوف"
+    >
+      <button
+        type="button"
+        class="cal-collapse-toggle"
+        id="quota-collapse-toggle"
+        aria-expanded="false"
+        aria-controls="quota-collapse-body"
+      >
+        <span class="cal-collapse-title">حدّ عدد حجوزات الضيوف</span>
+        <span class="cal-collapse-chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="cal-collapse-body" id="quota-collapse-body" hidden>
+      <p class="calibrate-hint">
+        اختياري — يحدّ أقصى عدد حجوزات في
+        <a href="./guest-booking.html">صفحة حجز الضيوف</a> (المقاعد الفعلية من القسم أعلاه).
+      </p>
+      <div class="cal-quota-row cal-quota-row--secondary">
+        <label class="cal-quota-label" for="ceremony-guest-quota"
+          >حدّ أقصى لعدد حجوزات الضيوف</label
+        >
+        <input
+          type="number"
+          class="cal-field-input cal-quota-input"
+          id="ceremony-guest-quota"
+          min="0"
+          max="9999"
+          step="1"
+          value="70"
+        />
+        <button type="button" class="cal-btn" id="ceremony-quota-save">حفظ الحدّ</button>
+      </div>
+      <p class="cal-msg cal-quota-status" id="ceremony-quota-status" role="status">
+        جاري التحميل…
+      </p>
+      </div>
+    </section>
+
+    <section
+      class="calibrate-panel calibrate-panel--roster cal-collapse-panel"
+      aria-label="سجل الخريجين"
+    >
+      <button
+        type="button"
+        class="cal-collapse-toggle"
+        id="roster-toggle"
+        aria-expanded="false"
+        aria-controls="roster-body"
+      >
+        <span class="cal-collapse-title">قائمة الخريجين (هوية + الاسم)</span>
+        <span class="cal-collapse-chevron" id="roster-chevron" aria-hidden="true"
+          >▼</span
+        >
+      </button>
+      <div class="cal-collapse-body" id="roster-body" hidden>
+        <p class="calibrate-hint">
+          استورد <strong>Excel</strong> (العمود الأول: الهوية، الثاني: الاسم) أو
+          أضِف صفوفاً يدوياً. الأسماء تُحفظ في Supabase داخل جدول
+          <strong>threa_student_roster</strong> — صف واحد <code>id = default</code>
+          وعمود <code>entries</code> (JSON)، وليس صفاً لكل طالب. لضيوف بلا هوية
+          استخدم <code>GUEST-XXXXXXXX</code> في عمود الرقم.
+        </p>
+        <div class="cal-roster-toolbar">
+          <label class="cal-btn cal-btn--file">
+            استيراد Excel
+            <input type="file" id="roster-xlsx" accept=".xlsx,.xls" hidden />
+          </label>
+          <button type="button" class="cal-btn" id="roster-add-row">+ صف يدوي</button>
+          <button type="button" class="cal-btn" id="roster-pull-cloud">
+            جلب من Supabase
+          </button>
+          <button type="button" class="cal-btn cal-btn--primary" id="roster-save-cloud">
+            حفظ في Supabase
+          </button>
+        </div>
+        <p class="cal-msg cal-roster-msg" id="roster-msg" role="status" hidden></p>
+        <div class="cal-roster-table-wrap">
+          <table class="cal-roster-table" id="roster-table">
+            <thead>
+              <tr>
+                <th>رقم الهوية</th>
+                <th>الاسم الكامل</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="roster-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="calibrate-layout">
+      <section class="calibrate-panel calibrate-panel--wide" aria-label="صورة المسرح">
+        <p class="calibrate-hint">
+          انقر داخل الصورة لوضع أو نقل العلامة الحمراء، ثم «حفظ لهذا المقعد» من اللوحة
+          اليمنى. النقاط الخضراء = معايرة محفوظة سابقاً.
+        </p>
+        <div class="cal-pano-toolbar" role="toolbar" aria-label="تكبير صورة المسرح">
+          <button type="button" class="cal-zoom-btn" id="cal-zoom-out" aria-label="تصغير">
+            −
+          </button>
+          <span class="cal-zoom-label" id="cal-zoom-label">100%</span>
+          <button type="button" class="cal-zoom-btn" id="cal-zoom-in" aria-label="تكبير">
+            +
+          </button>
+          <button type="button" class="cal-zoom-btn cal-zoom-btn--text" id="cal-zoom-reset">
+            ملاءمة
+          </button>
+        </div>
+        <div
+          id="cal-pano-stage"
+          class="cal-pano-stage"
+          tabindex="0"
+          aria-label="منطقة الصورة للنقر"
+        >
+          <div class="cal-pano-inner" id="cal-pano-inner">
+            <picture id="cal-pano-picture">
+              <source
+                srcset="./assets/theater-mobile.webp"
+                media="(max-width: 900px)"
+                type="image/webp"
+              />
+              <source
+                srcset="./assets/theater-mobile.jpg"
+                media="(max-width: 900px)"
+                type="image/jpeg"
+              />
+              <source srcset="./assets/theater.webp" type="image/webp" />
+              <img
+                id="cal-pano-img"
+                class="cal-pano-img"
+                src="./assets/theater.jpg"
+                alt="بانوراما المسرح"
+                decoding="async"
+                draggable="false"
+              />
+            </picture>
+            <div
+              id="cal-pano-pins-root"
+              class="cal-pano-pins-root"
+              aria-hidden="true"
+            ></div>
+            <div
+              id="cal-pano-pin"
+              class="cal-pano-pin cal-pano-pin--active"
+              hidden
+              aria-hidden="true"
+            >
+              <span class="cal-pano-pin-ring"></span>
+              <span class="cal-pano-pin-label">نقطة</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="calibrate-panel calibrate-panel--side">
+        <h2>معايرة موقع المقعد على الصورة</h2>
+        <p class="calibrate-hint calibrate-hint--tight">
+          ① اختر الفئة والناحية ② اضغط رقم المقعد ③ انقر على الصورة لوضع العلامة ④
+          <strong>حفظ لهذا المقعد</strong> — يُستخدم عند الحجز والاستعلام في الكشك.
+        </p>
+        <p class="cal-msg cal-pano-sync-status" id="cal-pano-sync-status" role="status">
+          جاري الاتصال بقاعدة المعايرة…
+        </p>
+        <h3 class="cal-subheading">مسار من المدخل إلى المقعد</h3>
+        <p class="calibrate-hint calibrate-hint--tight">
+          حدّد نقطة المدخل على الصورة — يظهر في الكشك والحجز خط متحرك من المدخل إلى
+          المقعد.
+        </p>
+        <div class="cal-btn-row cal-btn-row--stack">
+          <button type="button" class="cal-btn" id="cal-entrance-pick">
+            تحديد المدخل على الصورة
+          </button>
+          <button type="button" class="cal-btn cal-btn--primary" id="cal-entrance-save">
+            حفظ نقطة المدخل
+          </button>
+        </div>
+        <p class="cal-coords" id="cal-entrance-readout" aria-live="polite">مدخل: —</p>
+        <div class="cal-pano-filter-tabs" role="tablist" aria-label="فئة المقاعد">
+          <button type="button" class="cal-pano-filter-tab is-active" data-filter="all">
+            الكل
+          </button>
+          <button type="button" class="cal-pano-filter-tab" data-filter="student">خريج</button>
+          <button type="button" class="cal-pano-filter-tab" data-filter="companion">مرافق</button>
+          <button type="button" class="cal-pano-filter-tab" data-filter="guest">ضيف</button>
+        </div>
+        <div class="cal-side-pick" role="group" aria-label="الناحية">
+          <button
+            type="button"
+            class="cal-side-btn"
+            id="cal-side-right"
+            data-section="RIGHT"
+          >
+            الناحية اليمين
+          </button>
+          <button
+            type="button"
+            class="cal-side-btn"
+            id="cal-side-left"
+            data-section="LEFT"
+          >
+            الناحية اليسار
+          </button>
+          <button
+            type="button"
+            class="cal-side-btn"
+            id="cal-side-bridge"
+            data-section="BRIDGE"
+          >
+            قاعدة وسط
+          </button>
+        </div>
+        <p class="cal-pano-progress" id="cal-pano-progress" aria-live="polite"></p>
+        <div
+          id="cal-seat-grid"
+          class="cal-seat-grid"
+          hidden
+          aria-label="مقاعد الناحية المختارة"
+        ></div>
+        <p class="cal-seat-selected" id="cal-seat-selected" aria-live="polite">
+          اختر الناحية ثم رقم المقعد
+        </p>
+        <input type="hidden" id="cal-seat-id" value="" />
+
+        <label class="cal-field-label" for="cal-note">ملاحظة (اختياري)</label>
+        <input
+          class="cal-field-input"
+          id="cal-note"
+          type="text"
+          maxlength="200"
+          placeholder="للتذكير فقط"
+        />
+
+        <p class="cal-coords" id="cal-coords-readout" aria-live="polite">
+          panU: — · panV: — (من أعلى الصورة)
+        </p>
+
+        <div class="cal-btn-row cal-btn-row--stack">
+          <button type="button" class="cal-btn cal-btn--primary" id="cal-save-btn">
+            حفظ لهذا المقعد
+          </button>
+          <button type="button" class="cal-btn" id="cal-pano-next-uncal">
+            المقعد التالي غير المعاير
+          </button>
+          <button type="button" class="cal-btn" id="cal-pano-refresh-cloud">
+            تحديث من Supabase
+          </button>
+        </div>
+        <p class="cal-msg cal-msg--ok" id="cal-msg-ok" hidden></p>
+        <p class="cal-msg cal-msg--err" id="cal-msg-err" role="alert" hidden></p>
+
+        <h2 class="cal-h2-spaced">المحفوظ</h2>
+        <p class="cal-count" id="cal-saved-count">0 مقعد</p>
+        <ul class="cal-saved-list" id="cal-saved-list"></ul>
+
+        <h2 class="cal-h2-spaced">تصدير / استيراد</h2>
+        <div class="cal-btn-row cal-btn-row--stack">
+          <button type="button" class="cal-btn" id="cal-export-btn">نسخ JSON</button>
+          <button type="button" class="cal-btn" id="cal-download-btn">تحميل JSON</button>
+          <label class="cal-btn cal-btn--file">
+            استيراد ملف
+            <input type="file" id="cal-import-file" accept="application/json,.json" hidden />
+          </label>
+          <button type="button" class="cal-btn cal-btn--danger" id="cal-clear-btn">
+            مسح كل المعايرة
+          </button>
+        </div>
+        <textarea
+          class="cal-json-ta"
+          id="cal-json-ta"
+          rows="6"
+          readonly
+          placeholder="سيظهر JSON هنا بعد التصدير"
+        ></textarea>
+      </aside>
+    </div>
+
+    <script defer src="./theater-pano-url.js"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./threa-config.js?v=7"></script>
+    <script defer src="./student-roster.js?v=3"></script>
+    <script defer src="./guest-quota.js?v=6"></script>
+    <script defer src="./guest-assignments.js?v=6"></script>
+    <script defer src="./vendor/xlsx.full.min.js"></script>
+    <script defer src="./panorama-storage.js?v=3"></script>
+    <script defer src="./panorama-path.js"></script>
+    <script defer src="./calibrate.js?v=19"></script>
+  </body>
+</html>

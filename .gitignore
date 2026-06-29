@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.packages/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Environment files (none present, kept as safety)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Secrets
+*-firebase-adminsdk-*.json
+*-service-account.json
+firebase-adminsdk-*.json
+!firebase-adminsdk.example.json
+*credentials*.json
+*serviceAccount*.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Versioning internals (Restore Points are NOT committed)
+Versions/
+*.zip
+*.rar
+
+# Excluded embedded sub-projects (have their own repos or are too large)
+wppconnect-master/

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <title>فهرس روابط ثريا</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #06060c;
+        --card: #12121f;
+        --gold: #c9a227;
+        --text: #f0ebe0;
+        --muted: rgba(240, 235, 224, 0.65);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        font-family: "Tajawal", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 1.5rem 1rem 2.5rem;
+      }
+      .wrap {
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+      .lead {
+        margin: 0 0 1.25rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      .base {
+        font-size: 0.8rem;
+        color: var(--gold);
+        word-break: break-all;
+        margin-bottom: 1.25rem;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      a {
+        display: block;
+        padding: 0.85rem 1rem;
+        background: var(--card);
+        border: 1px solid rgba(201, 162, 39, 0.2);
+        border-radius: 0.65rem;
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      a:hover {
+        border-color: var(--gold);
+        background: rgba(201, 162, 39, 0.08);
+      }
+      a small {
+        display: block;
+        margin-top: 0.2rem;
+        font-weight: 400;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .section-title {
+        margin: 1.25rem 0 0.5rem;
+        font-size: 0.85rem;
+        color: var(--gold);
+        font-weight: 700;
+      }
+      .foot {
+        margin-top: 1.5rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>فهرس روابط ثريا</h1>
+      <p class="lead">حجز مقاعد حفل التخرج — ثانوية نخبة الشمال الأهلية</p>
+      <p class="base" id="site-base"></p>
+
+      <p class="section-title">للجمهور</p>
+      <ul>
+        <li>
+          <a href="./index.html">حجز الخريجين <small>index.html</small></a>
+        </li>
+        <li>
+          <a href="./guest-booking.html"
+            >حجز مقاعد الضيوف <small>guest-booking.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./kiosk.html">كشك «أين مقعدي؟» <small>kiosk.html</small></a>
+        </li>
+      </ul>
+
+      <p class="section-title">الإدارة والمعايرة</p>
+      <ul>
+        <li>
+          <a href="./calibrate.html">معايرة وإدارة <small>calibrate.html</small></a>
+        </li>
+        <li>
+          <a href="./guest-requests-admin.html"
+            >مراجعة طلبات الضيوف <small>guest-requests-admin.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./booking-admin.html"
+            >حجز إداري <small>booking-admin.html — خريج / مرافق / ضيف</small></a
+          >
+        </li>
+        <li>
+          <a href="./organizer.html"
+            >شاشة المنظّمين <small>organizer.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./bookings-monitor.html"
+            >متابعة الحجوزات <small>bookings-monitor.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./analytics.html"
+            >لوحة التحليلات <small>analytics.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./bookings-monitor.html"
+            >متابعة الحجوزات <small>bookings-monitor.html — تحديث مباشر + تذكير RSVP</small></a
+          >
+        </li>
+        <li>
+          <a href="./health-check.html"
+            >فحص جاهزية الحجز <small>health-check.html</small></a
+          >
+        </li>
+        <li>
+          <a href="./simulate.html">محاكاة (اختبار) <small>simulate.html</small></a>
+        </li>
+      </ul>
+
+      <p class="section-title">من روابط الدعوة (واتساب)</p>
+      <ul>
+        <li>
+          <a href="./seat.html">عرض المقعد <small>seat.html — يحتاج code و t</small></a>
+        </li>
+        <li>
+          <a href="./rsvp.html"
+            >تأكيد الحضور / RSVP <small>rsvp.html — يحتاج code و t</small></a
+          >
+        </li>
+      </ul>
+
+      <p class="section-title">خدمات خارجية</p>
+      <ul>
+        <li>
+          <a href="https://wpp.northelite0.com/qr" target="_blank" rel="noopener"
+            >ربط واتساب (QR) <small>wpp.northelite0.com/qr</small></a
+          >
+        </li>
+        <li>
+          <a href="https://wpp.northelite0.com/status" target="_blank" rel="noopener"
+            >حالة خادم واتساب <small>wpp.northelite0.com/status</small></a
+          >
+        </li>
+      </ul>
+
+      <p class="foot">
+        فهرس هذه الصفحة: <code>links.html</code> · القائمة الكاملة: <code>SITE-LINKS.md</code>
+      </p>
+    </div>
+    <script src="./threa-config.js"></script>
+    <script>
+      (function () {
+        var cfg = window.THREA_APP_CONFIG || {};
+        var base =
+          cfg.siteBaseUrl ||
+          location.origin.replace(/\/$/, "") + location.pathname.replace(/\/[^/]*$/, "");
+        base = String(base).replace(/\/$/, "");
+        var el = document.getElementById("site-base");
+        if (el) el.textContent = "الإنتاج: " + base;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0a0f" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./assets/icon2.jpeg" />
+    <title>حفل تخرج الدفعة الخامسة - ثانوية نخبة الشمال الأهلية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="./assets/theater-mobile.webp"
+      type="image/webp"
+      media="(max-width: 900px)"
+    />
+    <link rel="stylesheet" href="./style.css?v=12" />
+    <script defer src="./vendor/gsap.min.js"></script>
+    <script defer src="./vendor/qrcode.min.js?v=1"></script>
+  </head>
+  <body>
+    <div
+      id="webgl-root"
+      class="webgl-root"
+      hidden
+      aria-label="نموذج المسرح ثلاثي الأبعاد"
+    >
+      <canvas id="webgl-canvas"></canvas>
+    </div>
+
+    <div
+      id="pano-stage"
+      class="pano-stage"
+      hidden
+      aria-label="صورة بانوراما المسرح"
+    >
+      <div class="pano-inner" id="pano-inner">
+        <picture id="pano-picture">
+          <source
+            srcset="./assets/theater-mobile.webp"
+            media="(max-width: 900px)"
+            type="image/webp"
+          />
+          <source
+            srcset="./assets/theater-mobile.jpg"
+            media="(max-width: 900px)"
+            type="image/jpeg"
+          />
+          <source srcset="./assets/theater.webp" type="image/webp" />
+          <img
+            id="pano-img"
+            class="pano-img"
+            src="./assets/theater.jpg"
+            alt="بانوراما المسرح"
+            decoding="async"
+            fetchpriority="high"
+            draggable="false"
+          />
+        </picture>
+        <div
+          id="pano-pins-root"
+          class="pano-pins-root"
+          aria-hidden="true"
+        ></div>
+      </div>
+    </div>
+
+    <div class="app-overlay" id="app-overlay">
+      <main class="overlay-main">
+        <section
+          class="form-gate"
+          id="registration-gate"
+          aria-labelledby="gate-title"
+        >
+          <div class="form-gate-inner">
+            <img
+              class="registration-logo"
+              src="./assets/icon2.jpeg"
+              alt="شعار ثانوية نخبة الشمال الأهلية"
+              width="96"
+              height="96"
+            />
+            <p class="registration-school">ثانوية نخبة الشمال الأهلية</p>
+            <h2 class="gate-title" id="gate-title">حجز المقعد</h2>
+            <form id="guest-form" class="guest-form" novalidate>
+              <div class="guest-form-row guest-form-row--pair">
+                <div class="field-group">
+                  <label class="field-label" for="national-id"
+                    >رقم الهوية</label
+                  >
+                  <input
+                    class="field-input"
+                    id="national-id"
+                    name="nationalId"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    maxlength="16"
+                    required
+                    placeholder="أرقام فقط"
+                  />
+                </div>
+                <div class="field-group">
+                  <label class="field-label" for="student-name"
+                    >اسم الطالب</label
+                  >
+                  <input
+                    class="field-input field-input--readonly"
+                    id="student-name"
+                    name="studentName"
+                    type="text"
+                    readonly
+                    required
+                    placeholder="يظهر تلقائياً"
+                  />
+                </div>
+              </div>
+              <div class="field-group field-group--full">
+                <label class="field-label" for="companion-name"
+                  >اسم المرافق
+                  <span class="optional-tag">(اختياري)</span></label
+                >
+                <input
+                  class="field-input"
+                  id="companion-name"
+                  name="companionName"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="120"
+                  placeholder="اتركه فارغاً إن لم يكن هناك مرافق"
+                />
+              </div>
+              <div class="field-group field-group--full">
+                <label class="field-label" for="whatsapp-phone"
+                  >رقم الجوال (واتساب)</label
+                >
+                <div class="phone-input-row">
+                  <span class="phone-dial-prefix" dir="ltr" aria-hidden="true"
+                    >+966</span
+                  >
+                  <input
+                    class="field-input phone-local-input"
+                    id="whatsapp-phone"
+                    name="whatsappPhone"
+                    type="tel"
+                    inputmode="tel"
+                    autocomplete="tel"
+                    maxlength="15"
+                    required
+                    placeholder="مثال: 5xxxxxxxx"
+                  />
+                </div>
+              </div>
+              <p
+                class="form-error"
+                id="form-error"
+                role="alert"
+                hidden
+              ></p>
+              <div class="waitlist-offer" id="waitlist-offer" hidden>
+                <p class="waitlist-offer-text">
+                  المقاعد ممتلئة حالياً. سجّل في <strong>قائمة الانتظار</strong>
+                  وسنُرسل لك رسالة واتساب فور تحرّر مقعد.
+                </p>
+                <button
+                  type="button"
+                  class="submit-btn submit-btn--waitlist"
+                  id="waitlist-join-btn"
+                >
+                  انضم إلى قائمة الانتظار
+                </button>
+              </div>
+              <button type="submit" class="submit-btn" id="guest-submit">
+                تأكيد الحجز
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <div
+        class="booking-confirm-modal"
+        id="booking-confirm-modal"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-confirm-title"
+      >
+        <div class="booking-confirm-backdrop" id="booking-confirm-backdrop"></div>
+        <div class="booking-confirm-panel">
+          <h2 class="booking-confirm-title" id="booking-confirm-title">تم تأكيد الحجز</h2>
+          <p class="booking-confirm-lead" id="booking-confirm-lead"></p>
+          <div class="booking-confirm-seats" id="booking-confirm-seats"></div>
+          <div class="booking-invite-card" id="booking-invite-card" aria-hidden="true">
+            <div class="booking-invite-inner">
+              <p class="booking-invite-badge">دعوة حضور</p>
+              <p class="booking-invite-names" id="booking-invite-names"></p>
+              <p class="booking-invite-code" id="booking-invite-code" hidden></p>
+              <div class="booking-qr-wrap">
+                <canvas id="booking-qr-canvas" width="200" height="200" aria-label="رمز تسجيل الدخول"></canvas>
+              </div>
+              <p class="booking-invite-hint" id="booking-invite-hint">
+                ملاحظة هامة: اعرض الرمز عند الوصول إلى الحفل. تسجيل الدخول للنساء من 6:45 م
+                إلى 7:00 م. تسجيل الدخول للرجال من 7:15 م.
+              </p>
+            </div>
+          </div>
+          <p class="booking-wa-status" id="booking-wa-status" role="status"></p>
+          <p class="booking-confirm-countdown" id="booking-confirm-countdown" role="status"></p>
+          <div class="booking-confirm-actions">
+            <button
+              type="button"
+              class="booking-btn booking-btn--secondary"
+              id="booking-send-wa"
+              hidden
+            >
+              إعادة إرسال الدعوة
+            </button>
+            <button type="button" class="booking-btn booking-btn--primary" id="booking-continue-visual">
+              عرض المقاعد الآن
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="loading-dock" id="loading-dock" hidden>
+        <div class="loading-ring" aria-hidden="true"></div>
+        <p class="loading-label" id="loading-label">جاري التحميل…</p>
+      </div>
+
+      <div
+        class="seat-bottom-bar"
+        id="seat-card"
+        hidden
+        role="status"
+        aria-live="polite"
+      >
+        <div class="seat-bottom-bar-inner">
+          <p class="seat-bottom-bar-line" id="seat-summary-line"></p>
+          <button
+            type="button"
+            class="seat-bottom-bar-btn"
+            id="scroll-seat-btn"
+            aria-label="التركيز على مقعدك"
+          >
+            تركيز
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="pano-mobile-bar"
+        id="pano-mobile-bar"
+        hidden
+        aria-label="التقريب على صورة القاعة"
+      >
+        <button type="button" class="pano-mzoom-btn" id="pano-zoom-out" aria-label="تبعيد">
+          −
+        </button>
+        <button type="button" class="pano-mzoom-btn" id="pano-zoom-in" aria-label="تقريب">
+          +
+        </button>
+      </div>
+    </div>
+
+    <noscript>
+      <div class="noscript-banner">
+        يلزم تفعيل JavaScript لعرض تجربة المقعد.
+      </div>
+    </noscript>
+
+    <script defer src="./threa-config.js?v=13"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./country-dial-codes.js?v=2"></script>
+    <script defer src="./theater-pano-url.js"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script defer src="./seat-picker.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./student-roster.js"></script>
+    <script defer src="./guest-quota.js?v=6"></script>
+    <script defer src="./panorama-storage.js?v=2"></script>
+    <script defer src="./panorama-path.js"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./threa-links.js?v=1"></script>
+    <script defer src="./waitlist.js?v=1"></script>
+    <script defer src="./theater-webgl.js"></script>
+    <script defer src="./main.js?v=26"></script>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>محاكاة الحجز — تجربة داخلية</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./simulate.css?v=1" />
+  </head>
+  <body>
+    <div class="sim-wrap">
+      <header class="sim-header">
+        <h1>محاكاة حجز واقعية</h1>
+        <p class="sim-warn">
+          أداة تجربة داخلية فقط — تكتب في Firestore مثل الحجز الحقيقي. لا ترفعها للعامة على
+          الإنتاج.
+        </p>
+      </header>
+
+      <section class="sim-card">
+        <h2>خريجين</h2>
+        <label class="sim-field">
+          عدد الخريجين
+          <input type="number" id="sim-students" min="0" max="500" value="15" />
+        </label>
+        <label class="sim-field">
+          عدد من يحجز مع مرافق
+          <input type="number" id="sim-companions" min="0" max="500" value="6" />
+        </label>
+        <p class="sim-hint">من بين الخريجين أعلاه — كل واحد مع مرافق = مقعدان (يسار + يمين)</p>
+      </section>
+
+      <section class="sim-card">
+        <h2>ضيوف المراسم</h2>
+        <label class="sim-field">
+          عدد الضيوف
+          <input type="number" id="sim-guests" min="0" max="200" value="5" />
+        </label>
+        <p class="sim-hint" id="sim-guest-pool-hint">—</p>
+      </section>
+
+      <section class="sim-card">
+        <h2>التوقيت</h2>
+        <label class="sim-field">
+          تأخير بين كل حجز (مللي ثانية)
+          <input type="number" id="sim-delay" min="0" max="5000" value="350" step="50" />
+        </label>
+        <label class="sim-check">
+          <input type="checkbox" id="sim-checkin" checked />
+          تسجيل حضور عشوائي لبعض الحجوزات (كأنهم مروا على الكشك)
+        </label>
+      </section>
+
+      <div class="sim-actions">
+        <button type="button" class="sim-btn sim-btn--primary" id="sim-run">تشغيل المحاكاة</button>
+        <button type="button" class="sim-btn" id="sim-refresh">تحديث الإحصائيات</button>
+        <button type="button" class="sim-btn sim-btn--danger" id="sim-clear">
+          مسح كل الحجوزات
+        </button>
+      </div>
+
+      <section class="sim-stats" id="sim-stats" aria-live="polite"></section>
+
+      <section class="sim-log-wrap">
+        <h2>سجل التشغيل</h2>
+        <pre class="sim-log" id="sim-log" dir="ltr"></pre>
+      </section>
+    </div>
+
+    <script defer src="./threa-config.js"></script>
+    <script defer src="./invite-codes.js?v=1"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script defer src="./seat-picker.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./student-roster.js"></script>
+    <script defer src="./guest-quota.js"></script>
+    <script defer src="./guest-assignments.js?v=6"></script>
+    <script defer src="./simulate.js?v=2"></script>
+  </body>
+</html>

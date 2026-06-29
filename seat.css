@@ -1,0 +1,109 @@
+.seat-view-body {
+  margin: 0;
+  overflow: hidden;
+  background: #030305;
+  font-family: "Tajawal", system-ui, sans-serif;
+  color: #f5f5f7;
+}
+
+.seat-view-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(3, 3, 5, 0.92);
+}
+
+.seat-view-gate[hidden] {
+  display: none !important;
+}
+
+.seat-view-loading {
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.seat-view-err {
+  margin: 0;
+  max-width: 420px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #ffc9c5;
+}
+
+.seat-view-back {
+  color: #9ef5e8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.seat-view-back:hover {
+  text-decoration: underline;
+}
+
+.seat-view-body #pano-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.seat-view-body #pano-stage[hidden] {
+  display: none !important;
+}
+
+.seat-view-bar {
+  position: fixed;
+  z-index: 10;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  pointer-events: none;
+}
+
+.seat-view-bar[hidden] {
+  display: none !important;
+}
+
+.seat-view-bar-line {
+  flex: 1;
+  margin: 0 max(10px, env(safe-area-inset-left)) 0 max(10px, env(safe-area-inset-right));
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+  background: rgba(10, 12, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px 14px 0 0;
+  border-bottom: none;
+  pointer-events: auto;
+}
+
+.seat-view-focus-btn {
+  flex-shrink: 0;
+  margin-inline-end: max(10px, env(safe-area-inset-right));
+  padding: 0 16px;
+  border: none;
+  border-radius: 14px 14px 0 0;
+  background: rgba(40, 120, 180, 0.55);
+  color: #e8fbff;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.seat-view-body .pano-mobile-bar {
+  z-index: 11;
+  bottom: max(56px, calc(48px + env(safe-area-inset-bottom)));
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-guest-booking">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0a0f" />
+    <link rel="icon" href="./assets/icon2.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./assets/icon2.jpeg" />
+    <title>حجز ضيوف المراسم — حفل التخرّج</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css?v=10" />
+    <link rel="stylesheet" href="./guest-booking.css?v=3" />
+    <script defer src="./vendor/qrcode.min.js?v=1"></script>
+  </head>
+  <body class="guest-booking-body">
+    <div class="guest-booking-shell">
+      <header class="guest-booking-header">
+        <img
+          class="registration-logo"
+          src="./assets/icon2.jpeg"
+          alt="شعار ثانوية نخبة الشمال الأهلية"
+          width="96"
+          height="96"
+        />
+        <p class="registration-school">ثانوية نخبة الشمال الأهلية</p>
+        <h1>حجز مقاعد الضيوف</h1>
+        <p class="guest-quota-banner" id="guest-quota-banner" role="status" hidden></p>
+      </header>
+
+      <section class="form-gate guest-form-gate" id="registration-gate">
+        <div class="form-gate-inner">
+          <form id="ceremony-guest-form" class="guest-form" novalidate>
+            <div class="field-group field-group--full">
+              <label class="field-label" for="guest-full-name">الاسم الكامل</label>
+              <input
+                class="field-input"
+                id="guest-full-name"
+                name="guestName"
+                type="text"
+                autocomplete="name"
+                maxlength="120"
+                required
+                placeholder="اسم الضيف كما في الدعوة"
+              />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label" for="whatsapp-phone">رقم الجوال (واتساب)</label>
+              <div class="phone-input-row">
+                <span class="phone-dial-prefix" dir="ltr" aria-hidden="true"
+                  >+966</span
+                >
+                <input
+                  class="field-input phone-local-input"
+                  id="whatsapp-phone"
+                  name="whatsappPhone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  maxlength="15"
+                  required
+                  placeholder="مثال: 5xxxxxxxx"
+                />
+              </div>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+            <button type="submit" class="submit-btn" id="guest-submit" disabled>
+              إرسال طلب الحجز
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <div
+      class="booking-confirm-modal guest-pending-modal"
+      id="guest-pending-modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guest-pending-lead"
+    >
+      <div class="booking-confirm-backdrop" id="guest-pending-backdrop"></div>
+      <div class="booking-confirm-panel">
+        <p class="booking-confirm-lead guest-pending-message" id="guest-pending-lead">
+          ضيفنا الكريم: لحظات وتصلك رسالة واتس اب برقم وموقع المقعد الخاص بكم.
+        </p>
+        <div class="booking-confirm-actions">
+          <button type="button" class="booking-btn booking-btn--primary" id="guest-pending-ok">
+            حسناً
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="booking-confirm-modal"
+      id="booking-confirm-modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="booking-confirm-title"
+    >
+      <div class="booking-confirm-backdrop" id="booking-confirm-backdrop"></div>
+      <div class="booking-confirm-panel">
+        <h2 class="booking-confirm-title" id="booking-confirm-title">تم تأكيد الحجز</h2>
+        <p class="booking-confirm-lead" id="booking-confirm-lead"></p>
+        <div class="booking-confirm-seats" id="booking-confirm-seats"></div>
+        <div class="booking-invite-card">
+          <div class="booking-invite-inner">
+            <p class="booking-invite-badge">دعوة حضور — ضيف</p>
+            <p class="booking-invite-names" id="booking-invite-names"></p>
+            <p class="booking-invite-code" id="booking-invite-code" hidden></p>
+            <div class="booking-qr-wrap">
+              <canvas
+                id="booking-qr-canvas"
+                width="200"
+                height="200"
+                aria-label="رمز تسجيل الدخول"
+              ></canvas>
+            </div>
+            <p class="booking-invite-hint" id="booking-invite-hint">
+              ملاحظة هامة: اعرض الرمز عند الوصول إلى الحفل (وليس عند الاستقبال). تسجيل
+              الدخول من الساعة 7:15 م.
+            </p>
+          </div>
+        </div>
+        <p class="booking-wa-status" id="booking-wa-status" role="status"></p>
+        <div class="booking-confirm-actions">
+          <button
+            type="button"
+            class="booking-btn booking-btn--secondary"
+            id="booking-send-wa"
+            hidden
+          >
+            إعادة إرسال الدعوة
+          </button>
+          <a
+            class="booking-btn booking-btn--primary"
+            id="booking-seat-link"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            >عرض موقع المقعد</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-dock guest-loading-dock" id="loading-dock" hidden>
+      <div class="loading-ring" aria-hidden="true"></div>
+      <p class="loading-label" id="loading-label">جاري التحميل…</p>
+    </div>
+
+    <noscript>
+      <div class="noscript-banner">يلزم تفعيل JavaScript لإتمام الحجز.</div>
+    </noscript>
+
+    <script defer src="./threa-config.js?v=13"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./country-dial-codes.js?v=2"></script>
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script defer src="./seat-picker.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./student-roster.js?v=2"></script>
+    <script defer src="./guest-quota.js?v=5"></script>
+    <script defer src="./panorama-storage.js"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./guest-request-store.js?v=1"></script>
+    <script defer src="./ceremony-guest-invite.js?v=8"></script>
+    <script defer src="./threa-links.js?v=1"></script>
+    <script defer src="./guest-booking.js?v=16"></script>
+  </body>
+</html>

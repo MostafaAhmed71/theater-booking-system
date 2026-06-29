@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="page-organizer">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#050508" />
+    <link rel="icon" href="./assets/logo.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./assets/logo.jpeg" />
+    <title>استقبال الحفل — المنظّم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./organizer.css?v=8" />
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  </head>
+  <body class="org-body">
+    <div class="org-shell">
+      <header class="org-header">
+        <div class="org-brand">
+          <span class="org-brand-icon" aria-hidden="true">📷</span>
+          <div>
+            <h1>استقبال الحفل</h1>
+            <p class="org-lead">
+              قائمة بكل من سجّل عبر الموقع، وحالة الحضور بعد مسح رمز الدعوة.
+            </p>
+          </div>
+        </div>
+        <nav class="org-nav" aria-label="روابط سريعة">
+          <a href="./index.html">حجز الخريجين</a>
+          <a href="./guest-booking.html">حجز الضيوف</a>
+          <a href="./kiosk.html" target="_blank" rel="noopener">شاشة المسرح</a>
+          <a href="./analytics.html">التحليلات</a>
+          <a href="./booking-admin.html">حجز إداري</a>
+          <a href="./bookings-monitor.html">متابعة الحجوزات</a>
+        </nav>
+      </header>
+
+      <div class="org-rsvp-toast" id="org-rsvp-toast" hidden role="status"></div>
+
+      <div class="org-mode-cards" role="tablist" aria-label="طريقة الاستقبال">
+        <button
+          type="button"
+          class="org-mode-card"
+          id="org-mode-card-qr"
+          data-mode="qr"
+          role="tab"
+          aria-selected="false"
+          aria-controls="org-mode-qr"
+        >
+          <span class="org-mode-card-icon" aria-hidden="true">📷</span>
+          <span class="org-mode-card-title">مسح QR</span>
+          <span class="org-mode-card-desc">تسجيل الحضور بالكاميرا</span>
+        </button>
+        <button
+          type="button"
+          class="org-mode-card"
+          id="org-mode-card-code"
+          data-mode="code"
+          role="tab"
+          aria-selected="false"
+          aria-controls="org-mode-code"
+        >
+          <span class="org-mode-card-icon" aria-hidden="true">🔢</span>
+          <span class="org-mode-card-title">رمز الدعوة</span>
+          <span class="org-mode-card-desc">استعلام برمز 4 أرقام أو الهوية</span>
+        </button>
+      </div>
+
+      <section
+        class="org-mode-panel"
+        id="org-mode-qr"
+        data-mode="qr"
+        hidden
+        aria-label="مسح رمز الدعوة"
+      >
+        <h2 class="org-section-title">مسح رمز الدعوة</h2>
+        <div class="org-scanner-frame">
+          <div id="org-reader" aria-label="عرض الكاميرا"></div>
+          <div class="org-scanner-corners" aria-hidden="true"></div>
+        </div>
+        <p class="org-scanner-hint">بعد المسح يُسجَّل الحضور ويظهر تفاصيل الضيف</p>
+        <p class="org-status-pill is-scanning" id="org-status-pill">
+          اختر «مسح QR» لتشغيل الكاميرا
+        </p>
+      </section>
+
+      <section
+        class="org-mode-panel"
+        id="org-mode-code"
+        data-mode="code"
+        hidden
+        aria-label="استعلام برمز الدعوة"
+      >
+        <h2 class="org-section-title">استعلام برمز الدعوة</h2>
+        <p class="org-code-hint">أدخل رمز الدعوة (4 أرقام) أو رقم الهوية أو الصق رابط QR — بدون تسجيل حضور.</p>
+        <form class="org-code-form" id="org-lookup-form">
+          <input
+            type="search"
+            class="org-code-input"
+            id="org-lookup-input"
+            placeholder="مثال: 4821 أو رقم الهوية"
+            autocomplete="off"
+            inputmode="numeric"
+          />
+          <button type="submit" class="org-code-submit">استعلام</button>
+        </form>
+      </section>
+
+      <details class="org-collapse" id="org-stats-collapse">
+        <summary class="org-collapse-summary">
+          <span class="org-collapse-title">ملخص الأعداد</span>
+          <span class="org-collapse-meta">
+            <span class="org-chevron" aria-hidden="true"></span>
+          </span>
+        </summary>
+        <div class="org-collapse-body org-dashboard" aria-label="إحصائيات التسجيل والحضور">
+        <div class="org-stats-grid">
+          <div class="org-stat-card">
+            <span class="org-stat-num" id="org-stat-reg-students">0</span>
+            <span class="org-stat-label">طلاب مسجّلون</span>
+          </div>
+          <div class="org-stat-card">
+            <span class="org-stat-num" id="org-stat-reg-companions">0</span>
+            <span class="org-stat-label">مرافقون مسجّلون</span>
+          </div>
+          <div class="org-stat-card org-stat-card--ok">
+            <span class="org-stat-num" id="org-stat-present-students">0</span>
+            <span class="org-stat-label">طلاب حاضرون (مسح QR)</span>
+          </div>
+          <div class="org-stat-card org-stat-card--ok">
+            <span class="org-stat-num" id="org-stat-present-companions">0</span>
+            <span class="org-stat-label">مرافقون حاضرون</span>
+          </div>
+          <div class="org-stat-card org-stat-card--highlight">
+            <span class="org-stat-num" id="org-stat-present-total">0</span>
+            <span class="org-stat-label">إجمالي الحضور</span>
+          </div>
+          <div class="org-stat-card org-stat-card--warn">
+            <span class="org-stat-num" id="org-stat-absent-students">0</span>
+            <span class="org-stat-label">طلاب لم يحضروا بعد</span>
+          </div>
+        </div>
+        <p class="org-stats-foot" id="org-stats-foot">آخر تحديث: —</p>
+        </div>
+      </details>
+
+      <details class="org-collapse" id="org-roster-collapse">
+        <summary class="org-collapse-summary">
+          <span class="org-collapse-title">أسماء المسجّلين والحضور</span>
+          <span class="org-collapse-meta">
+            <span class="org-roster-count" id="org-roster-count">0 حجز</span>
+            <span class="org-chevron" aria-hidden="true"></span>
+          </span>
+        </summary>
+        <div class="org-collapse-body org-roster-panel" id="org-roster-section" aria-label="قائمة المسجّلين">
+        <div class="org-roster-toolbar">
+          <input
+            type="search"
+            class="org-roster-search"
+            id="org-roster-search"
+            placeholder="بحث بالاسم أو الرمز أو الهوية…"
+            autocomplete="off"
+          />
+          <div class="org-roster-filters" role="tablist" aria-label="تصفية">
+            <button type="button" class="org-filter is-active" data-filter="all">
+              الكل
+            </button>
+            <button type="button" class="org-filter" data-filter="present">
+              حاضر
+            </button>
+            <button type="button" class="org-filter" data-filter="absent">
+              لم يحضر
+            </button>
+          </div>
+        </div>
+        <ul class="org-roster-list" id="org-roster-list"></ul>
+        <p class="org-roster-empty" id="org-roster-empty" hidden>
+          لا يوجد مسجّلون بعد. يظهرون هنا بعد إتمام الحجز من صفحة الموقع.
+        </p>
+        </div>
+      </details>
+
+    </div>
+
+    <div
+      class="org-scan-modal"
+      id="org-scan-modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="org-scan-title"
+    >
+      <div class="org-scan-backdrop" id="org-scan-backdrop"></div>
+      <div class="org-scan-dialog org-card" id="org-result-panel">
+        <div class="org-card-head">
+          <h2 class="org-scan-title" id="org-scan-title">بيانات الضيف</h2>
+          <span class="org-badge org-badge--wait" id="org-badge">—</span>
+        </div>
+        <p class="org-err" id="org-msg" role="alert" hidden></p>
+        <div id="org-details" hidden>
+          <p class="org-student-name" id="org-student"></p>
+          <div class="org-details-grid">
+            <div class="org-field" id="org-companion-row" hidden>
+              <span class="org-field-label">المرافق</span>
+              <span class="org-field-value" id="org-companion"></span>
+            </div>
+            <div class="org-field">
+              <span class="org-field-label">الجوال</span>
+              <span class="org-field-value" id="org-phone" dir="ltr"></span>
+            </div>
+            <div class="org-field org-field--full">
+              <span class="org-field-label">رمز الدعوة / الهوية</span>
+              <span class="org-field-value" id="org-nid" dir="ltr"></span>
+            </div>
+          </div>
+          <div class="org-seats-block">
+            <p class="org-seats-title">المقاعد</p>
+            <ul class="org-seats-list" id="org-seats-list"></ul>
+          </div>
+        </div>
+        <button type="button" class="org-rescan" id="org-rescan">
+          إغلاق — مسح جديد
+        </button>
+      </div>
+    </div>
+
+    <script defer src="./seats-data.js?v=5"></script>
+    <script defer src="./booking-policy.js?v=1"></script>
+    <script type="module" src="./supabase-init.js"></script>
+    <script defer src="./invite-codes.js?v=2"></script>
+    <script defer src="./guest-assignments.js?v=7"></script>
+    <script defer src="./organizer.js?v=11"></script>
+  </body>
+</html>
